@@ -7,7 +7,12 @@ export const portfolioData = [
     subtitle: "High-Volume Claimant Acquisition & Verified Compensation Pipeline",
     description:
       "A flagship mass-tort lead acquisition and qualification engine engineered for the Camp Lejeune Justice Act compensation claims. Our performance marketing and intake squads generated targeted multi-channel traffic, qualified affected veterans, civilian workers, and their families through rigorous medical and residency criteria, and submitted high-intent verified leads to authorized legal partners, directly resulting in substantial approved compensation payouts for claimants.",
-    image: "/images/partners/camp-lejeune.png",
+    image: "/assets/portfolio/camplejeune-sign.png",
+    gallery: [
+      "/assets/portfolio/camplejeune-sign.png",
+      "/assets/portfolio/camplejeune-contamination.png",
+      "/assets/portfolio/camplejeune-water-ops.jpg",
+    ],
     bgImage: "/assets/backgrounds/curtains.jpg",
     tags: ["Mass Tort Acquisition", "Camp Lejeune Justice Act", "Lead Qualification", "Claimant Intake", "BPO Verification"],
     highlights: [

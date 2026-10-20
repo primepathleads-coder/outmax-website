@@ -104,7 +104,10 @@ export const PortfolioPage = () => {
 
                 <button
                   type="button"
-                  onClick={() => setSelectedItem(project)}
+                  onClick={() => {
+                    setSelectedItem(project);
+                    setActiveGalleryImg(null);
+                  }}
                   className="w-full py-2.5 text-xs uppercase tracking-wider font-semibold bg-black text-white hover:bg-gold hover:text-black transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <span>Inspect Architecture</span>
@@ -121,7 +124,10 @@ export const PortfolioPage = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-[#191817] text-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 border border-white/15 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <button
-              onClick={() => setSelectedItem(null)}
+              onClick={() => {
+                setSelectedItem(null);
+                setActiveGalleryImg(null);
+              }}
               className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer transition-colors"
             >
               <Icon icon="lucide:x" className="size-5" />
@@ -186,7 +192,10 @@ export const PortfolioPage = () => {
               </Link>
               <button
                 type="button"
-                onClick={() => setSelectedItem(null)}
+                onClick={() => {
+                  setSelectedItem(null);
+                  setActiveGalleryImg(null);
+                }}
                 className="text-xs text-white/60 hover:text-white"
               >
                 Close
