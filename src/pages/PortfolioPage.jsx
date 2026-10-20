@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SEO from "../components/SEO";
 import { portfolioData } from "../data/portfolioData";
 import { Link } from "react-router-dom";
@@ -6,6 +6,11 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 
 export const PortfolioPage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [activeGalleryImg, setActiveGalleryImg] = useState(null);
+
+  useEffect(() => {
+    if (selectedItem) setActiveGalleryImg(selectedItem.image);
+  }, [selectedItem]);
 
   return (
     <div className="pt-28 pb-24 text-black">
@@ -132,13 +137,34 @@ export const PortfolioPage = () => {
               {selectedItem.subtitle}
             </p>
 
-            <div className="rounded-2xl overflow-hidden h-64 border border-white/10 mb-6">
+            {/* Main Image / Gallery Viewer */}
+            <div className="rounded-2xl overflow-hidden h-64 border border-white/10 mb-3">
               <img
-                src={selectedItem.image}
+                src={activeGalleryImg || selectedItem.image}
                 alt={selectedItem.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-all duration-400"
               />
             </div>
+
+            {/* Gallery Thumbnails — shown only when project has multiple images */}
+            {selectedItem.gallery && selectedItem.gallery.length > 1 && (
+              <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
+                {selectedItem.gallery.map((src, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setActiveGalleryImg(src)}
+                    className={`flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all duration-200 cursor-pointer ${
+                      (activeGalleryImg || selectedItem.image) === src
+                        ? "border-gold"
+                        : "border-white/10 hover:border-white/40"
+                    }`}
+                  >
+                    <img src={src} alt={`View ${idx + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
 
             <div className="space-y-4 text-xs sm:text-sm font-light text-white/80 leading-relaxed mb-6">
               <p>{selectedItem.description}</p>
