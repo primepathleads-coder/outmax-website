@@ -49,7 +49,13 @@ export const portfolioData = [
     subtitle: "Derby, UK Community-Led Wellness Platform",
     description:
       "Complete digital platform and brand presence for Indus Dynamic Yoga's Save Your Soul Society in Derby, UK. Engineered to bridge offline studio presence with digital member booking, community discussion, and recurring workshop passes.",
-    image: "/assets/photos/project-wellness.jpg",
+    image: "/assets/portfolio/yoga-hero.jpg",
+    gallery: [
+      "/assets/portfolio/yoga-hero.jpg",
+      "/assets/portfolio/yoga-classes.png",
+      "/assets/portfolio/yoga-relaxation.png",
+      "/assets/portfolio/yoga-contact.png",
+    ],
     bgImage: "/assets/backgrounds/poster.jpg",
     tags: ["Digital Presence", "Derby UK", "Studio Booking", "Class Scheduling", "Brand Identity"],
     highlights: [
