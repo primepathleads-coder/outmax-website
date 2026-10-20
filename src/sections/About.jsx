@@ -55,9 +55,9 @@ multiple departments, from customer engagement to digital infrastructure`;
           <div className="relative overflow-hidden border border-white/15 shadow-2xl">
             <img
               ref={imgRef}
-              src="/assets/photos/team-collaboration.jpg"
-              alt="Outmax Services Operational Team"
-              className="w-full h-[420px] sm:h-[520px] object-cover"
+              src="/images/executives/hamid.png"
+              alt="Hamid Iqbal Khan — CEO, Outmax Services Ltd"
+              className="w-full h-[420px] sm:h-[520px] object-contain object-bottom bg-[#0d0d10]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
 

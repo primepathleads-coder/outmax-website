@@ -87,16 +87,25 @@ const Navbar = () => {
       );
   }, []);
 
+  const [logoVisible, setLogoVisible] = useState(true);
+
   useEffect(() => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setIsScrolled(currentScrollY > 30);
       setShowBurger(isOpen || currentScrollY <= lastScrollY || currentScrollY < 10);
+      // Hide logo on scroll down, show on scroll up
+      setLogoVisible(currentScrollY <= lastScrollY || currentScrollY < 10 || isOpen);
       lastScrollY = currentScrollY;
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, [isOpen]);
+
+  // Always show logo when menu is open
+  useEffect(() => {
+    if (isOpen) setLogoVisible(true);
   }, [isOpen]);
 
   const toggleMenu = () => {
@@ -125,8 +134,15 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Top Left Floating Logo */}
-      <div className="fixed top-5 left-6 sm:left-10 z-40 transition-all duration-300">
+      {/* Top Left Floating Logo — hides on scroll down, reappears on scroll up */}
+      <div
+        className="fixed top-5 left-6 sm:left-10 z-40 transition-all duration-500"
+        style={{
+          opacity: logoVisible ? 1 : 0,
+          transform: logoVisible ? "translateY(0)" : "translateY(-12px)",
+          pointerEvents: logoVisible ? "auto" : "none",
+        }}
+      >
         <OutmaxLogo variant="dark" showTagline={true} size="lg" />
       </div>
 
