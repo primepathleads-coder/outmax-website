@@ -52,26 +52,41 @@ multiple departments, from customer engagement to digital infrastructure`;
       <div className="flex flex-col items-center justify-between gap-12 sm:gap-16 px-4 sm:px-6 md:px-10 lg:px-12 pb-16 text-xl font-light tracking-wide lg:flex-row md:text-2xl lg:text-3xl text-white/70">
         {/* Visual Composition with Clip-Path Reveal */}
         <div className="w-full lg:w-1/2 relative">
-          <div className="relative overflow-hidden border border-white/15 shadow-2xl">
-            <img
-              ref={imgRef}
-              src="/images/executives/hamid.png"
-              alt="Hamid Iqbal Khan — CEO, Outmax Services Ltd"
-              className="w-full h-[420px] sm:h-[520px] object-contain object-bottom bg-[#0d0d10]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+          <div className="group relative overflow-hidden rounded-2xl border border-white/15 hover:border-gold/40 transition-all duration-500 shadow-2xl hover:shadow-[0_0_35px_rgba(207,163,85,0.25)] bg-[#0d0d12]">
+            {/* Image Container with Hover Scale & Ambient Vignette */}
+            <div className="relative overflow-hidden aspect-[4/3] sm:aspect-[16/11]">
+              <img
+                ref={imgRef}
+                src="/images/executives/boardroom-meeting.jpg"
+                alt="Hamid Iqbal Khan (CEO) & Executive Delegation — Outmax Services Ltd"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter contrast-[1.03] brightness-95"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />
 
-            <div className="absolute bottom-6 left-6 right-6 p-5 bg-black/80 backdrop-blur-md border border-white/10 text-xs normal-case font-normal">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-gold uppercase tracking-[0.2em] font-semibold text-[11px]">
+              {/* Shimmer light sweep on hover */}
+              <div className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+
+              {/* Top-left live badge */}
+              <div className="absolute top-4 left-4 z-10">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] font-mono tracking-wider uppercase text-gold">
+                  <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Executive Delegation
+                </span>
+              </div>
+            </div>
+
+            {/* Caption Card: Integrated cleanly beneath on mobile (<sm), glassmorphic overlay on tablet/desktop (sm+) */}
+            <div className="relative sm:absolute sm:bottom-4 sm:left-4 sm:right-4 p-4 sm:p-5 bg-black/90 sm:bg-black/80 backdrop-blur-md border-t sm:border border-white/10 text-xs normal-case font-normal rounded-b-2xl sm:rounded-xl">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-gold uppercase tracking-[0.2em] font-semibold text-[10px] sm:text-[11px]">
                   Corporate Leadership
                 </span>
-                <span className="text-white/60">Rawalpindi, Pakistan</span>
+                <span className="text-white/50 text-[11px] font-mono">Rawalpindi, Pakistan</span>
               </div>
-              <p className="text-white/90 text-sm font-medium">
-                Hamid Iqbal Khan (CEO) & Abdul Moiz Khan (MD)
+              <p className="text-white/95 text-sm sm:text-base font-medium leading-snug">
+                Hamid Iqbal Khan (CEO) &amp; Executive Partners
               </p>
-              <p className="text-white/60 text-xs mt-1">
+              <p className="text-white/60 text-xs mt-1 font-light leading-relaxed">
                 Apt No. 401, Building No. 153-H, Bahria Town Phase 4, Civic Center
               </p>
             </div>
