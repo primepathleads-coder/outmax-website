@@ -26,10 +26,10 @@ export const portfolioData = [
   {
     id: "le-mugs-awwwards-build",
     category: "Web & Brand Design",
-    title: "Le Mugs — International Brand Architecture",
+    title: "Le Mugs: International Brand Architecture",
     subtitle: "Awwwards-Recognized Digital Craftsmanship",
     description:
-      "Full digital brand architecture and interactive web experience designed and developed for Le Mugs — a celebrated restaurant and tea room in Saint-Raphaël, France. Recognized with an official award on Awwwards for exceptional visual hierarchy, custom WebGL interactions, and ultra-fluid responsiveness across all devices.",
+      "Full digital brand architecture and interactive web experience designed and developed for Le Mugs, a celebrated restaurant and tea room in Saint-Raphaël, France. Recognized with an official award on Awwwards for exceptional visual hierarchy, custom WebGL interactions, and ultra-fluid responsiveness across all devices.",
     image: "/assets/portfolio/lemugs-hero.png",
     gallery: [
       "/assets/portfolio/lemugs-hero.png",

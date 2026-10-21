@@ -136,7 +136,7 @@ const LoginPage = () => {
   return (
     <>
       <SEO
-        title="Team Member Login — Outmax Services Operations Hub"
+        title="Team Member Login | Outmax Services Operations Hub"
         description="Secure authenticated access for Outmax Services partners, engineers, and operational teams. Two-factor email OTP verification."
         canonicalUrl="/login"
       />
@@ -330,39 +330,39 @@ const LoginPage = () => {
             </div>
           </div>
 
-          {/* Quick Leadership Role Switcher for seamless verification & testing */}
-          <div className="mt-8 bg-white/[0.02] border border-white/10 rounded-2xl p-4 text-center">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-3 font-medium">
+          {/* Quick Leadership Role Switcher for verification and testing */}
+          <div className="mt-8 bg-white/[0.02] border border-white/10 rounded-xl p-4 text-center">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-3 font-medium">
               Quick Role Switch for Testing
             </p>
             <div className="flex flex-wrap items-center justify-center gap-2">
               <button
                 type="button"
                 onClick={() => handleQuickDemo("hamid")}
-                className="text-[11px] bg-white/5 hover:bg-white/10 text-white/80 hover:text-white px-2.5 py-1.5 rounded-lg border border-white/10 transition-colors"
+                className="text-[11px] bg-white/[0.04] hover:bg-white/[0.08] text-white/80 hover:text-white px-3 py-1.5 rounded-md border border-white/10 transition-colors cursor-pointer"
               >
-                👔 Hamid Iqbal (CEO)
+                Hamid Iqbal (CEO)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickDemo("hussain")}
-                className="text-[11px] bg-white/5 hover:bg-white/10 text-white/80 hover:text-white px-2.5 py-1.5 rounded-lg border border-white/10 transition-colors"
+                className="text-[11px] bg-white/[0.04] hover:bg-white/[0.08] text-white/80 hover:text-white px-3 py-1.5 rounded-md border border-white/10 transition-colors cursor-pointer"
               >
-                💻 Hussain Munir (Tech)
+                Hussain Munir (Tech)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickDemo("abdullah")}
-                className="text-[11px] bg-white/5 hover:bg-white/10 text-white/80 hover:text-white px-2.5 py-1.5 rounded-lg border border-white/10 transition-colors"
+                className="text-[11px] bg-white/[0.04] hover:bg-white/[0.08] text-white/80 hover:text-white px-3 py-1.5 rounded-md border border-white/10 transition-colors cursor-pointer"
               >
-                📈 Abdullah Sarkani (E-Com)
+                Abdullah Sarkani (E-Com)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickDemo("sanaullah")}
-                className="text-[11px] bg-white/5 hover:bg-white/10 text-white/80 hover:text-white px-2.5 py-1.5 rounded-lg border border-white/10 transition-colors"
+                className="text-[11px] bg-white/[0.04] hover:bg-white/[0.08] text-white/80 hover:text-white px-3 py-1.5 rounded-md border border-white/10 transition-colors cursor-pointer"
               >
-                🇦🇿 Sanaullah Khan (Baku)
+                Sanaullah Khan (Baku)
               </button>
             </div>
           </div>
@@ -370,7 +370,7 @@ const LoginPage = () => {
           {/* Security Note */}
           <div className="mt-6 text-center text-[11px] text-white/30 flex items-center justify-center gap-1.5">
             <Icon icon="ph:shield-check" className="text-sm text-[#cfa355]" />
-            <span>End-to-end encrypted session • Outmax Services Internal</span>
+            <span>End-to-end encrypted session | Outmax Services Internal</span>
           </div>
         </div>
       </div>

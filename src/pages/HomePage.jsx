@@ -16,7 +16,7 @@ export const HomePage = () => {
   return (
     <div className="relative">
       <SEO
-        title="Outmax Services — Business Process Outsourcing, Performance Marketing & Digital Operations"
+        title="Outmax Services | Business Process Outsourcing, Performance Marketing & Digital Operations"
         description="Scale business operations with Outmax Services. Specializing in 24/7 dedicated BPO teams, legal intake lead qualification, high-velocity Meta media buying, and custom web builds."
       />
 

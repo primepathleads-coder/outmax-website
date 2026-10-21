@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { useAuth } from "../context/AuthContext";
 import SEO from "../components/SEO";
 
-// Seed insights in case serverless API is cold or local
+// Curated internal strategic briefings
 const INITIAL_POSTS = [
   {
     id: "post_1",
-    title: "Q4 Global Operations Briefing: Scaling BPO Desks & Baku Expansion",
+    title: "Q4 Global Operations: Scaling Desks and Baku Strategic Corridor",
     content:
-      "Team Outmax — Over the past 90 days, our enterprise desks have achieved a 99.4% SLA adherence across all client portfolios. With our Baku business development hub led by Sanaullah Khan gaining strategic momentum in the South Caucasus, we are positioning Outmax as the primary operations partner for mid-market and enterprise North American brands. Keep customer retention and rapid response at the center of every workflow.",
+      "Over the past 90 days, our enterprise desks maintained consistent 99.4% SLA adherence across all client engagements. With our Baku business development initiative led by Sanaullah Khan expanding into Eurasian commercial networks, Outmax is reinforcing its position as an integrated operations partner for North American mid-market brands. Priority remains disciplined execution and rapid turnaround.",
     author: {
       name: "Hamid Iqbal Khan",
-      role: "Chief Executive Officer (CEO)",
+      role: "Chief Executive Officer",
       department: "Executive Leadership",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
       verified: true,
@@ -26,17 +26,17 @@ const INITIAL_POSTS = [
       {
         id: "c_1",
         authorName: "Abdul Moiz Khan",
-        authorRole: "Managing Director (MD)",
+        authorRole: "Managing Director",
         authorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80",
-        content: "Completely aligned. Our infrastructure team is also finalizing the latency optimization across all remote desks.",
+        content: "Agreed. Infrastructure teams have finalized latency optimizations across all regional endpoints.",
         timestamp: "2 hours ago",
       },
       {
         id: "c_1b",
         authorName: "Sanaullah Khan",
-        authorRole: "Business Development Lead — Baku Desk",
+        authorRole: "Business Development Lead (Baku)",
         authorAvatar: "/images/team/sanaullah.png",
-        content: "Baku corporate response is very receptive. We have 3 enterprise demos booked for next week.",
+        content: "Baku corporate response is very receptive. Three enterprise evaluations are scheduled for next week.",
         timestamp: "45 mins ago",
       },
     ],
@@ -45,12 +45,12 @@ const INITIAL_POSTS = [
   },
   {
     id: "post_2",
-    title: "High-Performance Systems & Hardware Precision in Modern Web Architecture",
+    title: "Hardware-Level Precision in Scalable Web Architecture",
     content:
-      "Coding isn't just about syntax — it's about the boundary between machine efficiency and user intuition. In our latest architectural upgrade for Outmax internal platforms, we reduced initial hydration latency by 42% through fine-grained reactive state and asset pipelining. Building scalable, zero-downtime systems requires treating every millisecond as a valuable resource.",
+      "Software architecture functions at the boundary between machine efficiency and intuitive human response. In our latest architectural refactor for Outmax internal platforms, we reduced initial hydration latency by 42% through streamlined reactive state and asset pipelining. Building reliable systems means treating every millisecond as a valuable engineering asset.",
     author: {
       name: "Hussain Munir",
-      role: "Full-Stack Engineer & Systems Architect",
+      role: "Systems Architect & Full-Stack Engineer",
       department: "Engineering & Technology",
       avatar: "/images/team/hussain.png",
       verified: true,
@@ -65,7 +65,7 @@ const INITIAL_POSTS = [
         authorName: "Hamid Iqbal Khan",
         authorRole: "CEO",
         authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
-        content: "Outstanding technical execution, Hussain. The speed improvement across all international regions is palpable.",
+        content: "Strong execution. The speed improvements across all operational regions are noticeable.",
         timestamp: "1 hour ago",
       },
     ],
@@ -74,9 +74,9 @@ const INITIAL_POSTS = [
   },
   {
     id: "post_3",
-    title: "Direct-to-Consumer Margin Matrix: Unlocking Real MRP Profitability",
+    title: "Unit Economics and Margin Calibration for Direct Brands",
     content:
-      "Too many founders focus purely on top-line GMV while bleeding out on CAC, return shipping, and inventory holding costs. At Outmax, when we guide our venture clients on pricing tiers and supplier unit economics, our standard rule is: if your net contribution margin after blended ad spend isn't hitting at least 28%, you don't have a marketing problem — you have a unit pricing architecture problem. Happy to review any client pipeline numbers this Thursday.",
+      "Founders frequently measure gross merchandise volume while overlooking cumulative customer acquisition costs, return logistics, and inventory holding penalties. When structuring pricing models for our venture partners, our baseline rule requires net contribution margins after blended acquisition spend to reach at least 28%. Healthy unit architecture precedes profitable scale.",
     author: {
       name: "Abdullah Khan Sarkani",
       role: "E-Commerce Strategist & Venture Lead",
@@ -94,12 +94,12 @@ const INITIAL_POSTS = [
   },
   {
     id: "post_4",
-    title: "Baku Commercial Corridor: New Cross-Border Partnerships",
+    title: "Baku Commercial Hub: Strategic Logistics and BPO Partnerships",
     content:
-      "Greetings from Azerbaijan! We have initiated bilateral commercial discussions with regional logistics operators and corporate enterprise networks in Baku. The demand for Outmax's blended business process outsourcing and customer success solutions is surging across emerging Eurasian tech hubs.",
+      "Reporting from Baku. We have begun formal bilateral discussions with regional logistics operators and corporate enterprise networks in Azerbaijan. Demand for Outmax integrated business process management and client success operations continues to grow across emerging Eurasian tech centers.",
     author: {
       name: "Sanaullah Khan",
-      role: "Business Development Lead — Baku Desk",
+      role: "Business Development Lead (Baku)",
       department: "International Expansion",
       avatar: "/images/team/sanaullah.png",
       verified: true,
@@ -137,14 +137,13 @@ const FeedDashboardPage = () => {
   const [activeCommentPostId, setActiveCommentPostId] = useState(null);
   const [commentText, setCommentText] = useState({});
   const [toastMessage, setToastMessage] = useState("");
+  const [roleSwitcherOpen, setRoleSwitcherOpen] = useState(false);
 
-  // Quick feedback toast
   const showToast = (msg) => {
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(""), 3000);
+    setTimeout(() => setToastMessage(""), 2600);
   };
 
-  // Fetch posts from API on mount
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -156,13 +155,12 @@ const FeedDashboardPage = () => {
           }
         }
       } catch (e) {
-        console.warn("Using offline feed posts", e);
+        console.warn("Using offline feed data", e);
       }
     };
     fetchPosts();
   }, []);
 
-  // Format relative time helper
   const formatTimeAgo = (dateStr) => {
     try {
       const diffMs = Date.now() - new Date(dateStr).getTime();
@@ -178,7 +176,6 @@ const FeedDashboardPage = () => {
     }
   };
 
-  // Submit new post / insight
   const handlePublishPost = async (e) => {
     e.preventDefault();
     if (!newContent.trim()) return;
@@ -186,16 +183,16 @@ const FeedDashboardPage = () => {
     setIsPosting(true);
 
     const postPayload = {
-      title: newTitle.trim(),
-      content: newContent.trim(),
+      title: newTitle.trim().replace(/—/g, "-"),
+      content: newContent.trim().replace(/—/g, "-"),
       category: newCategory,
       tags: newTags
         .split(",")
-        .map((t) => t.trim().replace(/^#/, ""))
+        .map((t) => t.trim().replace(/^#/, "").replace(/—/g, "-"))
         .filter(Boolean),
       mediaUrl: newMediaUrl.trim(),
       author: {
-        name: user?.name || "Outmax Member",
+        name: user?.name || "Team Member",
         role: user?.role || "Team Specialist",
         department: user?.department || "Operations",
         avatar: user?.avatar || "/images/team/hussain.png",
@@ -214,7 +211,6 @@ const FeedDashboardPage = () => {
         const data = await res.json();
         setPosts([data.post, ...posts]);
       } else {
-        // Local fallback
         const localPost = {
           ...postPayload,
           id: `post_${Date.now()}`,
@@ -226,16 +222,14 @@ const FeedDashboardPage = () => {
         setPosts([localPost, ...posts]);
       }
 
-      // Reset
       setNewTitle("");
       setNewContent("");
       setNewTags("");
       setNewMediaUrl("");
       setComposerOpen(false);
-      showToast("Your insight was published to the Outmax feed!");
+      showToast("Insight published");
     } catch (err) {
       console.error(err);
-      // Still show in local state
       const localPost = {
         ...postPayload,
         id: `post_${Date.now()}`,
@@ -246,13 +240,12 @@ const FeedDashboardPage = () => {
       };
       setPosts([localPost, ...posts]);
       setComposerOpen(false);
-      showToast("Published locally to feed.");
+      showToast("Insight saved");
     } finally {
       setIsPosting(false);
     }
   };
 
-  // Toggle Like
   const handleLike = async (postId) => {
     const userEmail = user?.email || "anonymous_member";
 
@@ -282,11 +275,10 @@ const FeedDashboardPage = () => {
         body: JSON.stringify({ postId, userEmail }),
       });
     } catch (e) {
-      console.warn("Like API offline, synced in local state", e);
+      console.warn("Endorsement synced locally", e);
     }
   };
 
-  // Add Comment
   const handleAddComment = async (postId) => {
     const text = commentText[postId];
     if (!text || !text.trim()) return;
@@ -296,7 +288,7 @@ const FeedDashboardPage = () => {
       authorName: user?.name || "Team Member",
       authorRole: user?.role || "Specialist",
       authorAvatar: user?.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user?.name || "User")}&backgroundColor=0c0c0f&textColor=cfa355`,
-      content: text.trim(),
+      content: text.trim().replace(/—/g, "-"),
       timestamp: "Just now",
     };
 
@@ -329,11 +321,10 @@ const FeedDashboardPage = () => {
         }),
       });
     } catch (e) {
-      console.warn("Comment API offline", e);
+      console.warn("Comment synced locally", e);
     }
   };
 
-  // Filter posts
   const filteredPosts = posts.filter((post) => {
     const matchesCategory =
       activeCategory === "All" ||
@@ -352,412 +343,278 @@ const FeedDashboardPage = () => {
   return (
     <>
       <SEO
-        title="Team Feed & Strategic Insights — Outmax Services Operations Hub"
-        description="Exclusive internal operations feed for Outmax Services. Real-time briefs from executive leadership, systems engineering, and global desks."
+        title="Team Feed & Strategic Insights | Outmax Services"
+        description="Internal executive memoranda, systems architecture updates, and operational analysis for Outmax Services."
         canonicalUrl="/feed"
       />
 
-      <div className="min-h-screen bg-[#07070a] text-white selection:bg-[#cfa355]/30 selection:text-white pt-24 pb-16">
-        {/* Subtle Luxury Grid Lines */}
-        <div className="fixed inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(207,163,85,0.06),rgba(255,255,255,0))] pointer-events-none" />
-
-        {/* Global Toast */}
+      {/* Minimal Apple-Style Dark Atmosphere */}
+      <div className="min-h-screen bg-[#070709] text-neutral-200 selection:bg-[#cfa355]/20 selection:text-white pt-20 pb-24 font-sans">
+        {/* Minimal Toast */}
         {toastMessage && (
-          <div className="fixed bottom-6 right-6 z-50 bg-[#16161e] border border-[#cfa355]/40 text-[#cfa355] text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 animate-bounce">
-            <Icon icon="ph:check-circle-bold" className="text-base" />
+          <div className="fixed bottom-6 right-6 z-50 bg-[#121217] border border-white/10 text-neutral-100 text-xs px-3.5 py-2.5 rounded-md shadow-xl flex items-center gap-2">
+            <Icon icon="ph:check" className="text-sm text-[#cfa355]" />
             <span>{toastMessage}</span>
           </div>
         )}
 
-        {/* Top Operational Status Bar */}
-        <header className="border-b border-white/10 bg-[#0c0c11]/80 backdrop-blur-md sticky top-0 z-30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
-            {/* Left: Brand & Portal Badge */}
+        {/* Apple-Style Minimal Glass Navigation Bar */}
+        <header className="border-b border-white/[0.08] bg-[#070709]/85 backdrop-blur-xl sticky top-0 z-30">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+            {/* Left: Clean Brand */}
             <div className="flex items-center gap-3">
               <Link to="/" className="flex items-center gap-2 group">
-                <span className="text-sm font-semibold tracking-[0.2em] text-[#cfa355] uppercase transition-colors group-hover:text-white">
+                <span className="text-xs font-semibold tracking-[0.25em] text-[#cfa355] uppercase transition-colors group-hover:text-white">
                   Outmax
                 </span>
-                <span className="text-[10px] uppercase tracking-widest bg-[#cfa355]/15 text-[#cfa355] px-2 py-0.5 rounded-full border border-[#cfa355]/30 font-medium">
-                  Team Hub
+                <span className="text-neutral-600 text-xs font-light">/</span>
+                <span className="text-xs text-neutral-400 font-normal">
+                  Portal
                 </span>
               </Link>
-
-              {/* Status Indicator */}
-              <div className="hidden md:flex items-center gap-2 text-[11px] text-white/50 pl-3 border-l border-white/10">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Bahria Town HQ • 99.4% SLA Live</span>
-              </div>
             </div>
 
-            {/* Middle: Quick Search */}
-            <div className="flex-1 max-w-md hidden sm:block">
+            {/* Middle: Minimal Clean Search Bar */}
+            <div className="flex-1 max-w-xs hidden sm:block">
               <div className="relative">
                 <Icon
                   icon="ph:magnifying-glass"
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-sm"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 text-xs"
                 />
                 <input
                   type="text"
-                  placeholder="Search strategic insights, authors, tags..."
+                  placeholder="Filter insights..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-[#13131b] border border-white/10 focus:border-[#cfa355] rounded-xl pl-9 pr-4 py-1.5 text-xs text-white placeholder-white/30 focus:outline-none transition-all"
+                  className="w-full bg-[#111116] border border-white/[0.08] focus:border-[#cfa355]/60 rounded-md pl-8 pr-3 py-1.5 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none transition-all"
                 />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white text-xs"
-                  >
-                    ×
-                  </button>
-                )}
               </div>
             </div>
 
-            {/* Right: User Status & Navigation */}
-            <div className="flex items-center gap-3">
-              <Link
-                to="/"
-                className="text-xs text-white/60 hover:text-white transition-colors hidden lg:flex items-center gap-1"
+            {/* Right: Actions & Profile */}
+            <div className="flex items-center gap-2.5">
+              <button
+                type="button"
+                onClick={() => setComposerOpen(!composerOpen)}
+                className="bg-white/[0.06] hover:bg-white/[0.1] text-neutral-200 hover:text-white border border-white/[0.08] px-3 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5"
               >
-                <span>Main Website</span>
-                <Icon icon="ph:arrow-square-out" className="text-sm" />
-              </Link>
+                <Icon icon="ph:plus" className="text-xs" />
+                <span>New Insight</span>
+              </button>
 
               {user ? (
-                <div className="flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full pl-1.5 pr-3 py-1">
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-7 h-7 rounded-full object-cover border border-[#cfa355]/40"
-                  />
-                  <div className="text-left hidden sm:block">
-                    <p className="text-xs font-medium text-white leading-tight">
-                      {user.name.split(" ")[0]}
-                    </p>
-                    <p className="text-[10px] text-[#cfa355] font-light leading-none truncate max-w-[100px]">
-                      {user.role}
-                    </p>
-                  </div>
+                <div className="relative">
                   <button
                     type="button"
-                    onClick={logout}
-                    title="Log Out of Portal"
-                    className="text-white/40 hover:text-red-400 transition-colors ml-1"
+                    onClick={() => setRoleSwitcherOpen(!roleSwitcherOpen)}
+                    className="flex items-center gap-2 bg-[#111116] border border-white/[0.08] hover:border-white/20 rounded-md px-2.5 py-1.5 transition-colors cursor-pointer text-left"
                   >
-                    <Icon icon="ph:sign-out" className="text-sm" />
+                    <img
+                      src={user.avatar}
+                      alt={user.name}
+                      className="w-5 h-5 rounded-sm object-cover"
+                    />
+                    <span className="text-xs text-neutral-200 font-medium hidden sm:inline">
+                      {user.name.split(" ")[0]}
+                    </span>
+                    <Icon icon="ph:caret-down" className="text-neutral-500 text-xs" />
                   </button>
+
+                  {/* Profile Dropdown */}
+                  {roleSwitcherOpen && (
+                    <div className="absolute right-0 mt-2 w-64 bg-[#111116] border border-white/[0.08] rounded-md shadow-2xl p-2 z-50">
+                      <div className="px-2.5 py-2 border-b border-white/[0.06]">
+                        <p className="text-xs font-medium text-white">{user.name}</p>
+                        <p className="text-[11px] text-neutral-400">{user.role}</p>
+                        <p className="text-[10px] text-neutral-500 font-mono mt-0.5">{user.email}</p>
+                      </div>
+
+                      <div className="py-1">
+                        <span className="text-[10px] uppercase tracking-wider text-neutral-500 px-2.5 py-1 block">
+                          Switch Identity
+                        </span>
+                        {[
+                          { key: "hamid", label: "Hamid Iqbal Khan (CEO)" },
+                          { key: "hussain", label: "Hussain Munir (Tech)" },
+                          { key: "abdullah", label: "Abdullah Sarkani (E-Com)" },
+                          { key: "sanaullah", label: "Sanaullah Khan (Baku)" },
+                        ].map((item) => (
+                          <button
+                            key={item.key}
+                            type="button"
+                            onClick={() => {
+                              loginAsDemo(item.key);
+                              setRoleSwitcherOpen(false);
+                            }}
+                            className="w-full text-left px-2.5 py-1.5 text-xs text-neutral-300 hover:text-white hover:bg-white/[0.04] rounded-sm transition-colors"
+                          >
+                            {item.label}
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="pt-1 border-t border-white/[0.06]">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            logout();
+                            setRoleSwitcherOpen(false);
+                          }}
+                          className="w-full text-left px-2.5 py-1.5 text-xs text-red-400 hover:bg-white/[0.04] rounded-sm transition-colors flex items-center justify-between"
+                        >
+                          <span>Sign Out</span>
+                          <Icon icon="ph:sign-out" className="text-xs" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
-                <div className="flex items-center gap-2">
-                  <Link
-                    to="/login"
-                    className="text-xs bg-[#cfa355] hover:bg-[#d9b165] text-[#08080b] font-medium px-3.5 py-1.5 rounded-lg transition-all shadow-md"
-                  >
-                    Member Log In
-                  </Link>
-                </div>
+                <Link
+                  to="/login"
+                  className="bg-[#cfa355] hover:bg-[#d9b165] text-[#070709] px-3 py-1.5 rounded-md text-xs font-medium transition-all"
+                >
+                  Log In
+                </Link>
               )}
             </div>
           </div>
         </header>
 
-        {/* Main 3-Column LinkedIn Style Container */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
-          {/* ================= LEFT COLUMN: Member Profile & Desk Nav (3 cols) ================= */}
-          <aside className="lg:col-span-3 space-y-5">
-            {/* Member Profile Card */}
-            <div className="bg-[#101017] border border-white/10 rounded-2xl overflow-hidden shadow-xl">
-              {/* Cover Gradient */}
-              <div className="h-16 bg-gradient-to-r from-[#181824] via-[#2a2417] to-[#14141d] relative">
-                <div className="absolute inset-0 bg-[radial-gradient(#cfa355_1px,transparent_1px)] [background-size:12px_12px] opacity-20" />
+        {/* Main Clean Centered Content Container */}
+        <main className="max-w-3xl mx-auto px-4 sm:px-6 mt-8 space-y-6">
+          {/* Minimal Desk Selector Tabs */}
+          <nav className="flex items-center gap-1 overflow-x-auto pb-1 border-b border-white/[0.06] scrollbar-none">
+            {CATEGORIES.map((cat) => {
+              const isActive = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveCategory(cat)}
+                  className={`text-xs px-3 py-1.5 rounded-md transition-all whitespace-nowrap cursor-pointer ${
+                    isActive
+                      ? "bg-white/[0.08] text-white font-medium"
+                      : "text-neutral-400 hover:text-neutral-200 hover:bg-white/[0.02]"
+                  }`}
+                >
+                  {cat === "All" ? "All Entries" : cat}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Minimal Apple-Style Post Composer (When Open) */}
+          {composerOpen && (
+            <div className="bg-[#0f0f14] border border-white/[0.08] rounded-xl p-5 shadow-2xl transition-all">
+              <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-4">
+                <span className="text-xs uppercase tracking-wider text-neutral-400 font-medium">
+                  Draft Internal Memo
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setComposerOpen(false)}
+                  className="text-neutral-500 hover:text-neutral-300 text-xs"
+                >
+                  Close
+                </button>
               </div>
 
-              {/* Avatar & Details */}
-              <div className="px-5 pb-5 text-center relative -mt-8">
-                <img
-                  src={
-                    user?.avatar ||
-                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80"
-                  }
-                  alt={user?.name || "Team Member"}
-                  className="w-16 h-16 rounded-full mx-auto object-cover border-2 border-[#cfa355] shadow-lg bg-[#0a0a0d]"
-                />
-
-                <div className="mt-3">
-                  <div className="flex items-center justify-center gap-1.5">
-                    <h2 className="text-sm font-semibold text-white">
-                      {user?.name || "Hamid Iqbal Khan"}
-                    </h2>
-                    <Icon
-                      icon="ph:seal-check-fill"
-                      className="text-[#cfa355] text-sm shrink-0"
-                      title="Verified Outmax Team Member"
-                    />
-                  </div>
-                  <p className="text-[11px] text-[#cfa355] font-light mt-0.5">
-                    {user?.role || "Chief Executive Officer (CEO)"}
-                  </p>
-                  <p className="text-[10px] text-white/40 uppercase tracking-widest mt-1">
-                    {user?.department || "Executive Leadership"}
-                  </p>
+              <form onSubmit={handlePublishPost} className="space-y-4">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Title or Strategic Subject"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    className="w-full bg-transparent border-b border-white/[0.08] focus:border-[#cfa355]/60 pb-2 text-sm text-white placeholder-neutral-500 focus:outline-none"
+                  />
                 </div>
 
-                {/* Desk Metrics */}
-                <div className="mt-4 pt-4 border-t border-white/10 grid grid-cols-2 gap-2 text-left text-xs">
-                  <div className="bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
-                    <span className="text-[10px] text-white/40 block uppercase tracking-wider">
-                      Desk SLA
-                    </span>
-                    <span className="text-sm font-semibold text-emerald-400">99.4%</span>
-                  </div>
-                  <div className="bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
-                    <span className="text-[10px] text-white/40 block uppercase tracking-wider">
-                      Feed Insights
-                    </span>
-                    <span className="text-sm font-semibold text-[#cfa355]">
-                      {posts.length}
-                    </span>
-                  </div>
+                <div>
+                  <textarea
+                    rows={4}
+                    required
+                    placeholder="Compose memo, engineering breakdown, or operational update..."
+                    value={newContent}
+                    onChange={(e) => setNewContent(e.target.value)}
+                    className="w-full bg-transparent border border-white/[0.06] focus:border-[#cfa355]/60 rounded-md p-3 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none leading-relaxed resize-none"
+                  />
                 </div>
 
-                {/* HQ Location Note */}
-                <div className="mt-4 flex items-center justify-center gap-1 text-[11px] text-white/40">
-                  <Icon icon="ph:map-pin" className="text-[#cfa355]" />
-                  <span>Bahria Town Phase 4, Civic Center</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Desk Category Navigation */}
-            <div className="bg-[#101017] border border-white/10 rounded-2xl p-4 shadow-xl">
-              <h3 className="text-[11px] uppercase tracking-[0.2em] text-[#cfa355] font-semibold mb-3 px-2">
-                Operational Desks
-              </h3>
-              <div className="space-y-1">
-                {CATEGORIES.map((cat) => {
-                  const isActive = activeCategory === cat;
-                  return (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() => setActiveCategory(cat)}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
-                        isActive
-                          ? "bg-[#cfa355] text-[#08080b] font-medium shadow-md shadow-[#cfa355]/10"
-                          : "text-white/70 hover:bg-white/5 hover:text-white"
-                      }`}
-                    >
-                      <span className="flex items-center gap-2">
-                        <Icon
-                          icon={
-                            cat === "All"
-                              ? "ph:squares-four"
-                              : cat === "Leadership"
-                              ? "ph:crown"
-                              : cat === "Engineering"
-                              ? "ph:code"
-                              : cat === "E-Commerce"
-                              ? "ph:shopping-bag"
-                              : cat === "Expansion"
-                              ? "ph:globe-hemisphere-east"
-                              : "ph:chart-line-up"
-                          }
-                          className="text-sm"
-                        />
-                        <span>{cat === "All" ? "All Streams" : cat}</span>
-                      </span>
-                      <span
-                        className={`text-[10px] px-1.5 py-0.5 rounded ${
-                          isActive
-                            ? "bg-black/20 text-[#08080b]"
-                            : "bg-white/5 text-white/40"
-                        }`}
-                      >
-                        {cat === "All"
-                          ? posts.length
-                          : posts.filter((p) => p.category?.toLowerCase() === cat.toLowerCase()).length}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Quick Switch Switcher if needed */}
-            <div className="bg-[#101017] border border-white/10 rounded-2xl p-4 shadow-xl">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/40 block mb-2 font-medium">
-                Switch Active Persona
-              </span>
-              <div className="grid grid-cols-2 gap-1.5 text-[11px]">
-                <button
-                  type="button"
-                  onClick={() => loginAsDemo("hamid")}
-                  className="bg-white/5 hover:bg-white/10 text-white/80 p-1.5 rounded-lg text-left truncate transition-colors"
-                >
-                  👔 Hamid (CEO)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => loginAsDemo("hussain")}
-                  className="bg-white/5 hover:bg-white/10 text-white/80 p-1.5 rounded-lg text-left truncate transition-colors"
-                >
-                  💻 Hussain (Tech)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => loginAsDemo("abdullah")}
-                  className="bg-white/5 hover:bg-white/10 text-white/80 p-1.5 rounded-lg text-left truncate transition-colors"
-                >
-                  📈 Abdullah (Ecom)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => loginAsDemo("sanaullah")}
-                  className="bg-white/5 hover:bg-white/10 text-white/80 p-1.5 rounded-lg text-left truncate transition-colors"
-                >
-                  🇦🇿 Sanaullah (Baku)
-                </button>
-              </div>
-            </div>
-          </aside>
-
-          {/* ================= CENTER COLUMN: Composer & Feed Stream (6 cols) ================= */}
-          <main className="lg:col-span-6 space-y-5">
-            {/* LinkedIn-style Post / Insight Composer */}
-            <div className="bg-[#101017] border border-white/10 rounded-2xl p-5 shadow-xl relative overflow-hidden">
-              <div className="flex items-center gap-3">
-                <img
-                  src={
-                    user?.avatar ||
-                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80"
-                  }
-                  alt={user?.name || "Author"}
-                  className="w-10 h-10 rounded-full object-cover border border-[#cfa355]/40"
-                />
-                <button
-                  type="button"
-                  onClick={() => setComposerOpen(!composerOpen)}
-                  className="flex-1 text-left bg-[#09090d] hover:bg-[#13131c] border border-white/10 hover:border-[#cfa355]/50 rounded-full px-4 py-2.5 text-xs text-white/40 transition-all cursor-pointer flex items-center justify-between"
-                >
-                  <span>Publish an operational insight, case study, or memo...</span>
-                  <Icon icon="ph:pencil-simple-line" className="text-sm text-[#cfa355]" />
-                </button>
-              </div>
-
-              {/* Composer Dropdown / Drawer */}
-              {composerOpen && (
-                <form onSubmit={handlePublishPost} className="mt-4 pt-4 border-t border-white/10 space-y-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                   <div>
+                    <label className="block text-[11px] text-neutral-400 mb-1">
+                      Desk Category
+                    </label>
+                    <select
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      className="w-full bg-[#15151c] border border-white/[0.08] focus:border-[#cfa355]/60 rounded-md p-2 text-xs text-neutral-200 focus:outline-none cursor-pointer"
+                    >
+                      {CATEGORIES.filter((c) => c !== "All").map((c) => (
+                        <option key={c} value={c} className="bg-[#111116]">
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] text-neutral-400 mb-1">
+                      Tags (comma separated)
+                    </label>
                     <input
                       type="text"
-                      placeholder="Insight Headline (e.g. Q4 Logistics Optimization or MRP Unit Economics)"
-                      value={newTitle}
-                      onChange={(e) => setNewTitle(e.target.value)}
-                      className="w-full bg-[#0a0a0e] border border-white/10 focus:border-[#cfa355] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-white/30 focus:outline-none"
+                      placeholder="e.g. UnitEconomics, PerfArchitecture"
+                      value={newTags}
+                      onChange={(e) => setNewTags(e.target.value)}
+                      className="w-full bg-[#15151c] border border-white/[0.08] focus:border-[#cfa355]/60 rounded-md px-3 py-2 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none"
                     />
                   </div>
+                </div>
 
-                  <div>
-                    <textarea
-                      rows={4}
-                      required
-                      placeholder="Write your strategic briefing, technical breakdown, or team insight..."
-                      value={newContent}
-                      onChange={(e) => setNewContent(e.target.value)}
-                      className="w-full bg-[#0a0a0e] border border-white/10 focus:border-[#cfa355] rounded-xl p-3 text-xs text-white placeholder-white/30 focus:outline-none leading-relaxed resize-none"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-[11px] text-neutral-400 mb-1">
+                    Attachment Image URL (Optional)
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="https://..."
+                    value={newMediaUrl}
+                    onChange={(e) => setNewMediaUrl(e.target.value)}
+                    className="w-full bg-[#15151c] border border-white/[0.08] focus:border-[#cfa355]/60 rounded-md px-3 py-2 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none"
+                  />
+                </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[10px] uppercase tracking-wider text-white/50 mb-1">
-                        Category Desk
-                      </label>
-                      <select
-                        value={newCategory}
-                        onChange={(e) => setNewCategory(e.target.value)}
-                        className="w-full bg-[#0a0a0e] border border-white/10 focus:border-[#cfa355] rounded-xl p-2 text-xs text-white focus:outline-none cursor-pointer"
-                      >
-                        {CATEGORIES.filter((c) => c !== "All").map((c) => (
-                          <option key={c} value={c} className="bg-[#101017]">
-                            {c} Desk
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] uppercase tracking-wider text-white/50 mb-1">
-                        Tags (comma separated)
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="e.g. UnitEconomics, PerfArchitecture"
-                        value={newTags}
-                        onChange={(e) => setNewTags(e.target.value)}
-                        className="w-full bg-[#0a0a0e] border border-white/10 focus:border-[#cfa355] rounded-xl px-3 py-2 text-xs text-white placeholder-white/30 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <input
-                      type="url"
-                      placeholder="Optional Media / Image URL (Unsplash, CDN, or chart)"
-                      value={newMediaUrl}
-                      onChange={(e) => setNewMediaUrl(e.target.value)}
-                      className="w-full bg-[#0a0a0e] border border-white/10 focus:border-[#cfa355] rounded-xl px-3.5 py-2 text-xs text-white placeholder-white/30 focus:outline-none"
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setComposerOpen(false)}
-                      className="text-xs text-white/40 hover:text-white transition-colors"
-                    >
-                      Cancel
-                    </button>
-
-                    <button
-                      type="submit"
-                      disabled={isPosting || !newContent.trim()}
-                      className="bg-[#cfa355] hover:bg-[#d9b165] text-[#08080b] font-medium text-xs px-5 py-2.5 rounded-xl transition-all shadow-md shadow-[#cfa355]/20 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-                    >
-                      {isPosting ? (
-                        <>
-                          <Icon icon="eos-icons:loading" className="text-sm animate-spin" />
-                          <span>Publishing...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Icon icon="ph:paper-plane-tilt-bold" className="text-sm" />
-                          <span>Post Insight</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </form>
-              )}
+                <div className="flex items-center justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setComposerOpen(false)}
+                    className="text-xs text-neutral-400 hover:text-white px-3 py-1.5 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isPosting || !newContent.trim()}
+                    className="bg-[#cfa355] hover:bg-[#d9b165] text-[#070709] px-4 py-1.5 rounded-md text-xs font-medium transition-all disabled:opacity-40 cursor-pointer"
+                  >
+                    {isPosting ? "Publishing..." : "Publish Entry"}
+                  </button>
+                </div>
+              </form>
             </div>
+          )}
 
-            {/* Stream Status / Filter Bar */}
-            <div className="flex items-center justify-between text-xs text-white/50 px-1">
-              <span>
-                Showing <strong className="text-white">{filteredPosts.length}</strong> strategic insights
-                {activeCategory !== "All" && ` in ${activeCategory}`}
-              </span>
-              <span className="flex items-center gap-1 text-[11px] text-[#cfa355]">
-                <Icon icon="ph:sparkle-fill" className="text-xs" />
-                <span>Verified Outmax Radar</span>
-              </span>
-            </div>
-
-            {/* Feed Cards Stream */}
-            <div className="space-y-4">
-              {filteredPosts.map((post) => {
+          {/* Feed Stream */}
+          <div className="space-y-4">
+            {filteredPosts.length === 0 ? (
+              <div className="py-16 text-center text-xs text-neutral-500">
+                No entries found in this category.
+              </div>
+            ) : (
+              filteredPosts.map((post) => {
                 const userEmail = user?.email || "anonymous_member";
                 const hasLiked = post.likedBy?.includes(userEmail);
                 const isCommentOpen = activeCommentPostId === post.id;
@@ -765,9 +622,9 @@ const FeedDashboardPage = () => {
                 return (
                   <article
                     key={post.id}
-                    className="bg-[#101017] border border-white/10 hover:border-white/15 rounded-2xl p-5 sm:p-6 shadow-xl transition-all duration-300"
+                    className="bg-[#0c0c10] border border-white/[0.07] hover:border-white/[0.12] rounded-xl p-5 sm:p-6 transition-all"
                   >
-                    {/* Author Header */}
+                    {/* Header: Author & Metadata */}
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="flex items-center gap-3">
                         <img
@@ -778,69 +635,57 @@ const FeedDashboardPage = () => {
                             )}&backgroundColor=0c0c0f&textColor=cfa355`
                           }
                           alt={post.author?.name}
-                          className="w-11 h-11 rounded-full object-cover border border-[#cfa355]/40"
+                          className="w-9 h-9 rounded-md object-cover border border-white/[0.08]"
                         />
                         <div>
                           <div className="flex items-center gap-1.5">
-                            <span className="text-xs sm:text-sm font-semibold text-white">
+                            <span className="text-xs sm:text-sm font-medium text-white">
                               {post.author?.name}
                             </span>
-                            {post.author?.verified && (
-                              <Icon
-                                icon="ph:seal-check-fill"
-                                className="text-[#cfa355] text-sm shrink-0"
-                                title="Verified Outmax Executive"
-                              />
-                            )}
                           </div>
-                          <p className="text-[11px] text-[#cfa355] font-light leading-tight">
-                            {post.author?.role}
+                          <p className="text-[11px] text-neutral-400 mt-0.5">
+                            {post.author?.role} <span className="text-neutral-600">·</span> {formatTimeAgo(post.createdAt)}
                           </p>
-                          <div className="flex items-center gap-2 text-[10px] text-white/40 mt-0.5">
-                            <span>{formatTimeAgo(post.createdAt)}</span>
-                            <span>•</span>
-                            <span className="uppercase tracking-wider">{post.author?.department}</span>
-                          </div>
                         </div>
                       </div>
 
-                      {/* Category Badge */}
-                      <span className="text-[10px] uppercase tracking-wider bg-white/5 border border-white/10 text-white/70 px-2.5 py-1 rounded-full shrink-0 font-medium">
-                        {post.category || "Insight"}
+                      {/* Minimal Desk Tag */}
+                      <span className="text-[10px] uppercase tracking-wider text-neutral-400 bg-white/[0.03] border border-white/[0.06] px-2 py-1 rounded-sm font-mono">
+                        {post.category || "General"}
                       </span>
                     </div>
 
-                    {/* Post Title */}
+                    {/* Title */}
                     {post.title && (
-                      <h3 className="text-sm sm:text-base font-semibold text-white/95 mb-2 leading-snug">
+                      <h2 className="text-sm sm:text-base font-semibold text-neutral-100 mb-2 leading-snug">
                         {post.title}
-                      </h3>
+                      </h2>
                     )}
 
-                    {/* Post Content */}
-                    <div className="text-xs sm:text-sm text-white/80 font-light leading-relaxed whitespace-pre-line mb-3">
+                    {/* Content */}
+                    <p className="text-xs sm:text-sm text-neutral-300 font-normal leading-relaxed whitespace-pre-line mb-3">
                       {post.content}
-                    </div>
+                    </p>
 
-                    {/* Media Preview if attached */}
+                    {/* Media Attachment */}
                     {post.mediaUrl && (
-                      <div className="mb-4 rounded-xl overflow-hidden border border-white/10 bg-black/40 max-h-96">
+                      <div className="mb-4 rounded-lg overflow-hidden border border-white/[0.08] bg-black/30 max-h-96">
                         <img
                           src={post.mediaUrl}
-                          alt="Post Media Attachment"
-                          className="w-full h-full object-cover hover:scale-[1.02] transition-transform duration-500"
+                          alt="Attachment preview"
+                          className="w-full h-full object-cover"
                           loading="lazy"
                         />
                       </div>
                     )}
 
-                    {/* Tags row */}
+                    {/* Tags */}
                     {post.tags && post.tags.length > 0 && (
                       <div className="flex flex-wrap items-center gap-1.5 mb-4">
                         {post.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="text-[10px] text-[#cfa355] bg-[#cfa355]/10 px-2 py-0.5 rounded-md font-mono"
+                            className="text-[10px] text-neutral-400 bg-white/[0.02] border border-white/[0.06] px-1.5 py-0.5 rounded-sm font-mono"
                           >
                             #{tag}
                           </span>
@@ -848,80 +693,64 @@ const FeedDashboardPage = () => {
                       </div>
                     )}
 
-                    {/* Engagement Metric Summary Bar */}
-                    <div className="flex items-center justify-between text-[11px] text-white/40 pb-3 border-b border-white/10">
-                      <span className="flex items-center gap-1">
-                        <Icon icon="ph:heart-fill" className="text-red-400 text-xs" />
-                        <span>{post.likesCount || 0} endorsements</span>
-                      </span>
-                      <span>{(post.comments || []).length} comments</span>
-                    </div>
+                    {/* Actions Bar */}
+                    <div className="flex items-center justify-between pt-3 border-t border-white/[0.06] text-xs text-neutral-400">
+                      <div className="flex items-center gap-4">
+                        <button
+                          type="button"
+                          onClick={() => handleLike(post.id)}
+                          className={`flex items-center gap-1.5 transition-colors cursor-pointer ${
+                            hasLiked
+                              ? "text-[#cfa355] font-medium"
+                              : "hover:text-white"
+                          }`}
+                        >
+                          <Icon
+                            icon={hasLiked ? "ph:heart-fill" : "ph:heart"}
+                            className="text-sm"
+                          />
+                          <span>{post.likesCount || 0}</span>
+                        </button>
 
-                    {/* Interactive Action Bar (Like, Comment, Share) */}
-                    <div className="flex items-center justify-between pt-2">
-                      <button
-                        type="button"
-                        onClick={() => handleLike(post.id)}
-                        className={`flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-lg transition-colors cursor-pointer ${
-                          hasLiked
-                            ? "text-red-400 bg-red-400/10 font-medium"
-                            : "text-white/60 hover:text-white hover:bg-white/5"
-                        }`}
-                      >
-                        <Icon
-                          icon={hasLiked ? "ph:heart-fill" : "ph:heart"}
-                          className={`text-base ${hasLiked ? "scale-110" : ""}`}
-                        />
-                        <span>{hasLiked ? "Endorsed" : "Endorse"}</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setActiveCommentPostId(isCommentOpen ? null : post.id)
-                        }
-                        className={`flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-lg transition-colors cursor-pointer ${
-                          isCommentOpen
-                            ? "text-[#cfa355] bg-[#cfa355]/10 font-medium"
-                            : "text-white/60 hover:text-white hover:bg-white/5"
-                        }`}
-                      >
-                        <Icon icon="ph:chat-circle-dots" className="text-base" />
-                        <span>Comment</span>
-                      </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setActiveCommentPostId(isCommentOpen ? null : post.id)
+                          }
+                          className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"
+                        >
+                          <Icon icon="ph:chat-circle" className="text-sm" />
+                          <span>{(post.comments || []).length}</span>
+                        </button>
+                      </div>
 
                       <button
                         type="button"
                         onClick={() => {
                           navigator.clipboard?.writeText?.(window.location.href);
-                          showToast("Insight link copied to clipboard!");
+                          showToast("Link copied");
                         }}
-                        className="flex items-center gap-1.5 text-xs text-white/60 hover:text-white py-1.5 px-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+                        className="hover:text-white transition-colors cursor-pointer flex items-center gap-1"
                       >
-                        <Icon icon="ph:share-network" className="text-base" />
+                        <Icon icon="ph:share-simple" className="text-sm" />
                         <span>Share</span>
                       </button>
                     </div>
 
-                    {/* Expandable Comment Drawer */}
+                    {/* Inline Comment Section */}
                     {isCommentOpen && (
-                      <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
-                        {/* Add Comment Input */}
+                      <div className="mt-4 pt-4 border-t border-white/[0.06] space-y-3">
+                        {/* New Comment Input */}
                         <div className="flex items-center gap-2">
-                          <img
-                            src={
-                              user?.avatar ||
-                              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80"
-                            }
-                            alt={user?.name || "User"}
-                            className="w-7 h-7 rounded-full object-cover shrink-0"
-                          />
                           <input
                             type="text"
-                            placeholder="Add your executive comment or analysis..."
+                            placeholder="Add a comment..."
                             value={commentText[post.id] || ""}
                             onChange={(e) =>
-                              setCommentText({ ...commentText, [post.id]: e.target.value })
+                              setCommentText({
+                                ...commentText,
+                                [post.id]: e.target.value,
+                              })
                             }
                             onKeyDown={(e) => {
                               if (e.key === "Enter") {
@@ -929,207 +758,48 @@ const FeedDashboardPage = () => {
                                 handleAddComment(post.id);
                               }
                             }}
-                            className="flex-1 bg-[#09090d] border border-white/10 focus:border-[#cfa355] rounded-xl px-3 py-1.5 text-xs text-white placeholder-white/30 focus:outline-none"
+                            className="flex-1 bg-[#15151c] border border-white/[0.08] focus:border-[#cfa355]/60 rounded-md px-3 py-1.5 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none"
                           />
                           <button
                             type="button"
                             onClick={() => handleAddComment(post.id)}
-                            className="bg-[#cfa355] hover:bg-[#d9b165] text-[#08080b] p-1.5 rounded-xl text-xs transition-colors shrink-0"
+                            className="bg-white/[0.08] hover:bg-white/[0.14] text-white px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer"
                           >
-                            <Icon icon="ph:paper-plane-right-fill" className="text-sm" />
+                            Reply
                           </button>
                         </div>
 
-                        {/* Existing Comments List */}
-                        {post.comments && post.comments.length > 0 ? (
-                          <div className="space-y-2.5 pt-2">
+                        {/* Comments List */}
+                        {post.comments && post.comments.length > 0 && (
+                          <div className="space-y-2 pt-1">
                             {post.comments.map((c) => (
                               <div
                                 key={c.id}
-                                className="bg-white/[0.02] border border-white/5 rounded-xl p-3 flex items-start gap-2.5 text-xs"
+                                className="bg-white/[0.02] border border-white/[0.04] rounded-md p-3 text-xs"
                               >
-                                <img
-                                  src={
-                                    c.authorAvatar ||
-                                    `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
-                                      c.authorName
-                                    )}&backgroundColor=0c0c0f&textColor=cfa355`
-                                  }
-                                  alt={c.authorName}
-                                  className="w-6 h-6 rounded-full object-cover shrink-0 mt-0.5"
-                                />
-                                <div className="flex-1">
-                                  <div className="flex items-center justify-between">
-                                    <span className="font-semibold text-white/90">
-                                      {c.authorName}
-                                    </span>
-                                    <span className="text-[10px] text-white/30">
-                                      {c.timestamp}
-                                    </span>
-                                  </div>
-                                  <span className="text-[10px] text-[#cfa355] block font-light">
-                                    {c.authorRole}
+                                <div className="flex items-center justify-between text-neutral-400 mb-1">
+                                  <span className="font-medium text-neutral-200">
+                                    {c.authorName}
                                   </span>
-                                  <p className="text-white/80 font-light mt-1 leading-relaxed">
-                                    {c.content}
-                                  </p>
+                                  <span className="text-[10px] text-neutral-500">
+                                    {c.timestamp}
+                                  </span>
                                 </div>
+                                <p className="text-neutral-300 font-normal leading-relaxed">
+                                  {c.content}
+                                </p>
                               </div>
                             ))}
                           </div>
-                        ) : (
-                          <p className="text-[11px] text-white/30 text-center py-2">
-                            No comments yet. Be the first to analyze this insight.
-                          </p>
                         )}
                       </div>
                     )}
                   </article>
                 );
-              })}
-            </div>
-          </main>
-
-          {/* ================= RIGHT COLUMN: Executive Radar & Global Desks (3 cols) ================= */}
-          <aside className="lg:col-span-3 space-y-5">
-            {/* Executive Leadership Radar */}
-            <div className="bg-[#101017] border border-white/10 rounded-2xl p-4 sm:p-5 shadow-xl">
-              <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
-                <h3 className="text-[11px] uppercase tracking-[0.2em] text-[#cfa355] font-semibold">
-                  Executive Radar
-                </h3>
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80"
-                    alt="Hamid Iqbal Khan"
-                    className="w-9 h-9 rounded-full object-cover border border-[#cfa355]/40"
-                  />
-                  <div>
-                    <h4 className="text-xs font-semibold text-white">Hamid Iqbal Khan</h4>
-                    <p className="text-[10px] text-[#cfa355]">CEO &amp; Managing Director</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80"
-                    alt="Abdul Moiz Khan"
-                    className="w-9 h-9 rounded-full object-cover border border-[#cfa355]/40"
-                  />
-                  <div>
-                    <h4 className="text-xs font-semibold text-white">Abdul Moiz Khan</h4>
-                    <p className="text-[10px] text-[#cfa355]">Managing Director (MD)</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src="/images/team/hussain.png"
-                    alt="Hussain Munir"
-                    className="w-9 h-9 rounded-full object-cover border border-[#cfa355]/40"
-                  />
-                  <div>
-                    <h4 className="text-xs font-semibold text-white">Hussain Munir</h4>
-                    <p className="text-[10px] text-[#cfa355]">Full-Stack Systems Architect</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src="/images/team/sanaullah.png"
-                    alt="Sanaullah Khan"
-                    className="w-9 h-9 rounded-full object-cover border border-[#cfa355]/40"
-                  />
-                  <div>
-                    <h4 className="text-xs font-semibold text-white">Sanaullah Khan</h4>
-                    <p className="text-[10px] text-[#cfa355]">Baku International Desk</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src="/images/team/abdullah.png"
-                    alt="Abdullah Khan Sarkani"
-                    className="w-9 h-9 rounded-full object-cover border border-[#cfa355]/40"
-                  />
-                  <div>
-                    <h4 className="text-xs font-semibold text-white">Abdullah Khan Sarkani</h4>
-                    <p className="text-[10px] text-[#cfa355]">E-Commerce Venture Lead</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Global Operational Desks Card */}
-            <div className="bg-[#101017] border border-white/10 rounded-2xl p-4 sm:p-5 shadow-xl">
-              <h3 className="text-[11px] uppercase tracking-[0.2em] text-[#cfa355] font-semibold mb-3">
-                Active Operational Desks
-              </h3>
-              <div className="space-y-3 text-xs">
-                <div className="p-2.5 bg-white/[0.02] border border-white/5 rounded-xl">
-                  <div className="flex items-center justify-between text-[11px] font-medium text-white mb-0.5">
-                    <span>🇵🇰 Bahria Town HQ (Rawalpindi)</span>
-                    <span className="text-emerald-400 font-mono text-[10px]">Active</span>
-                  </div>
-                  <p className="text-[10px] text-white/50">
-                    BPO Operations, Media Buying &amp; Corporate Strategy
-                  </p>
-                </div>
-
-                <div className="p-2.5 bg-white/[0.02] border border-white/5 rounded-xl">
-                  <div className="flex items-center justify-between text-[11px] font-medium text-white mb-0.5">
-                    <span>🇦🇿 Baku International Hub</span>
-                    <span className="text-emerald-400 font-mono text-[10px]">Active</span>
-                  </div>
-                  <p className="text-[10px] text-white/50">
-                    Led by Sanaullah Khan — Regional Corporate BD
-                  </p>
-                </div>
-
-                <div className="p-2.5 bg-white/[0.02] border border-white/5 rounded-xl">
-                  <div className="flex items-center justify-between text-[11px] font-medium text-white mb-0.5">
-                    <span>⚡ GIKI Technology Core</span>
-                    <span className="text-emerald-400 font-mono text-[10px]">Active</span>
-                  </div>
-                  <p className="text-[10px] text-white/50">
-                    Led by Hussain Munir — High-throughput Systems
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Trending Strategic Tags */}
-            <div className="bg-[#101017] border border-white/10 rounded-2xl p-4 sm:p-5 shadow-xl">
-              <h3 className="text-[11px] uppercase tracking-[0.2em] text-[#cfa355] font-semibold mb-3">
-                Trending Strategic Tags
-              </h3>
-              <div className="flex flex-wrap gap-1.5">
-                {[
-                  "MRPStrategy",
-                  "UnitEconomics",
-                  "HardwarePrecision",
-                  "GIKIEngineering",
-                  "BakuHub",
-                  "GlobalSLA",
-                  "PerformanceArchitecture",
-                ].map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => setSearchQuery(tag)}
-                    className="text-[10px] bg-white/5 hover:bg-[#cfa355]/20 text-white/70 hover:text-[#cfa355] px-2.5 py-1 rounded-lg border border-white/5 transition-colors font-mono cursor-pointer"
-                  >
-                    #{tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </aside>
-        </div>
+              })
+            )}
+          </div>
+        </main>
       </div>
     </>
   );

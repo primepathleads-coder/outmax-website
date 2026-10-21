@@ -10,7 +10,7 @@ export const AboutPage = () => {
   return (
     <div className="pt-28 pb-24 text-black">
       <SEO
-        title="About Outmax Services — Leadership, Mission & Global Operations"
+        title="About Outmax Services | Leadership, Mission & Global Operations"
         description="Meet Outmax Services, led by CEO Hamid Iqbal Khan and MD Abdul Moiz Khan. Providing enterprise BPO, lead acquisition desks, and performance marketing from Rawalpindi, Pakistan."
       />
 

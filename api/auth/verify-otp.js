@@ -28,7 +28,7 @@ const KNOWN_MEMBERS = {
   },
   "sanaullah@outmaxservices.com": {
     name: "Sanaullah Khan",
-    role: "Business Development Lead — Baku Desk",
+    role: "Business Development Lead (Baku Desk)",
     department: "International Expansion",
     avatar: "/images/team/sanaullah.png",
     verified: true,

@@ -124,7 +124,7 @@ export const ContactPage = () => {
   return (
     <div className="pt-28 pb-24 text-black">
       <SEO
-        title="Contact Outmax Services — Start Your Project or Request an Audit"
+        title="Contact Outmax Services | Start Your Project or Request an Audit"
         description="Get in touch with Outmax Services leadership for dedicated BPO squad placement, paid advertising management, or custom digital builds. Rapid 24-hour turnaround."
       />
 

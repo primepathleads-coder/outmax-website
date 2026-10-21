@@ -58,7 +58,7 @@ multiple departments, from customer engagement to digital infrastructure`;
               <img
                 ref={imgRef}
                 src="/images/executives/boardroom-meeting.jpg"
-                alt="Hamid Iqbal Khan (CEO) & Executive Delegation — Outmax Services Ltd"
+                alt="Hamid Iqbal Khan (CEO) & Executive Delegation, Outmax Services Ltd"
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter contrast-[1.03] brightness-95"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />

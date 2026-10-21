@@ -152,7 +152,7 @@ export const PortfolioPage = () => {
               />
             </div>
 
-            {/* Gallery Thumbnails — shown only when project has multiple images */}
+            {/* Gallery Thumbnails: shown only when project has multiple images */}
             {selectedItem.gallery && selectedItem.gallery.length > 1 && (
               <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
                 {selectedItem.gallery.map((src, idx) => (

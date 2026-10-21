@@ -135,7 +135,7 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Top Left Floating Logo — hides on scroll down, reappears on scroll up */}
+      {/* Top Left Floating Logo - hides on scroll down, reappears on scroll up */}
       <div
         className="fixed top-5 left-6 sm:left-10 z-40 transition-all duration-500"
         style={{
@@ -158,9 +158,9 @@ const Navbar = () => {
       >
         <Link
           to="/feed"
-          className="flex items-center gap-2 bg-black/80 hover:bg-[#cfa355] text-white hover:text-black border border-white/20 hover:border-[#cfa355] px-4 py-2.5 rounded-full text-[11px] uppercase tracking-[0.18em] font-medium backdrop-blur-md transition-all shadow-lg group"
+          className="flex items-center gap-2 bg-black/80 hover:bg-[#cfa355] text-white hover:text-black border border-white/20 hover:border-[#cfa355] px-3.5 py-2 rounded-md text-[11px] uppercase tracking-[0.18em] font-medium backdrop-blur-md transition-all shadow-lg group"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 group-hover:bg-black animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-sm bg-emerald-400 group-hover:bg-black" />
           <span>Team Portal</span>
         </Link>
       </div>
@@ -189,7 +189,7 @@ const Navbar = () => {
               >
                 <span>{item.name}</span>
                 {item.isSpecial && (
-                  <span className="text-[10px] tracking-widest uppercase bg-[#cfa355]/20 text-[#cfa355] px-2.5 py-0.5 rounded-full border border-[#cfa355]/40 align-middle">
+                  <span className="text-[10px] tracking-widest uppercase bg-[#cfa355]/20 text-[#cfa355] px-2 py-0.5 rounded-md border border-[#cfa355]/40 align-middle">
                     Members
                   </span>
                 )}

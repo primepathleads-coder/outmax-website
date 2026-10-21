@@ -3,12 +3,12 @@ if (!globalThis.__outmax_posts_store) {
   globalThis.__outmax_posts_store = [
     {
       id: "post_1",
-      title: "Q4 Global Operations Briefing: Scaling BPO Desks & Baku Expansion",
+      title: "Q4 Global Operations: Scaling Desks and Baku Strategic Corridor",
       content:
-        "Team Outmax — Over the past 90 days, our enterprise desks have achieved a 99.4% SLA adherence across all client portfolios. With our Baku business development hub led by Sanaullah Khan gaining strategic momentum in the South Caucasus, we are positioning Outmax as the primary operations partner for mid-market and enterprise North American brands. Keep customer retention and rapid response at the center of every workflow.",
+        "Over the past 90 days, our enterprise desks maintained consistent 99.4% SLA adherence across all client engagements. With our Baku business development initiative led by Sanaullah Khan expanding into Eurasian commercial networks, Outmax is reinforcing its position as an integrated operations partner for North American mid-market brands. Priority remains disciplined execution and rapid turnaround.",
       author: {
         name: "Hamid Iqbal Khan",
-        role: "Chief Executive Officer (CEO)",
+        role: "Chief Executive Officer",
         department: "Executive Leadership",
         avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
         verified: true,
@@ -21,9 +21,9 @@ if (!globalThis.__outmax_posts_store) {
         {
           id: "c_1",
           authorName: "Abdul Moiz Khan",
-          authorRole: "Managing Director (MD)",
+          authorRole: "Managing Director",
           authorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80",
-          content: "Completely aligned. Our infrastructure team is also finalizing the latency optimization across all remote desks.",
+          content: "Agreed. Infrastructure teams have finalized latency optimizations across all regional endpoints.",
           timestamp: "2 hours ago",
         },
       ],
@@ -32,12 +32,12 @@ if (!globalThis.__outmax_posts_store) {
     },
     {
       id: "post_2",
-      title: "High-Performance Systems & Hardware Precision in Modern Web Architecture",
+      title: "Hardware-Level Precision in Scalable Web Architecture",
       content:
-        "Coding isn't just about syntax — it's about the boundary between machine efficiency and user intuition. In our latest architectural upgrade for Outmax internal platforms, we reduced initial hydration latency by 42% through fine-grained reactive state and asset pipelining. Building scalable, zero-downtime systems requires treating every millisecond as a valuable resource.",
+        "Software architecture functions at the boundary between machine efficiency and intuitive human response. In our latest architectural refactor for Outmax internal platforms, we reduced initial hydration latency by 42% through streamlined reactive state and asset pipelining. Building reliable systems means treating every millisecond as a valuable engineering asset.",
       author: {
         name: "Hussain Munir",
-        role: "Full-Stack Engineer & Systems Architect",
+        role: "Systems Architect & Full-Stack Engineer",
         department: "Engineering & Technology",
         avatar: "/images/team/hussain.png",
         verified: true,
@@ -52,7 +52,7 @@ if (!globalThis.__outmax_posts_store) {
           authorName: "Hamid Iqbal Khan",
           authorRole: "CEO",
           authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
-          content: "Outstanding technical execution, Hussain. The speed improvement across all international regions is palpable.",
+          content: "Strong execution. The speed improvements across all operational regions are noticeable.",
           timestamp: "1 hour ago",
         },
       ],
@@ -61,9 +61,9 @@ if (!globalThis.__outmax_posts_store) {
     },
     {
       id: "post_3",
-      title: "Direct-to-Consumer Margin Matrix: Unlocking Real MRP Profitability",
+      title: "Unit Economics and Margin Calibration for Direct Brands",
       content:
-        "Too many founders focus purely on top-line GMV while bleeding out on CAC, return shipping, and inventory holding costs. At Outmax, when we guide our venture clients on pricing tiers and supplier unit economics, our standard rule is: if your net contribution margin after blended ad spend isn't hitting at least 28%, you don't have a marketing problem — you have a unit pricing architecture problem. Happy to review any client pipeline numbers this Thursday.",
+        "Founders frequently measure gross merchandise volume while overlooking cumulative customer acquisition costs, return logistics, and inventory holding penalties. When structuring pricing models for our venture partners, our baseline rule requires net contribution margins after blended acquisition spend to reach at least 28%. Healthy unit architecture precedes profitable scale.",
       author: {
         name: "Abdullah Khan Sarkani",
         role: "E-Commerce Strategist & Venture Lead",
@@ -81,12 +81,12 @@ if (!globalThis.__outmax_posts_store) {
     },
     {
       id: "post_4",
-      title: "Baku Commercial Corridor: New Cross-Border Partnerships",
+      title: "Baku Commercial Hub: Strategic Logistics and BPO Partnerships",
       content:
-        "Greetings from Azerbaijan! We have initiated bilateral commercial discussions with regional logistics operators and corporate enterprise networks in Baku. The demand for Outmax's blended business process outsourcing and customer success solutions is surging across emerging Eurasian tech hubs.",
+        "Reporting from Baku. We have begun formal bilateral discussions with regional logistics operators and corporate enterprise networks in Azerbaijan. Demand for Outmax integrated business process management and client success operations continues to grow across emerging Eurasian tech centers.",
       author: {
         name: "Sanaullah Khan",
-        role: "Business Development Lead — Baku Desk",
+        role: "Business Development Lead (Baku)",
         department: "International Expansion",
         avatar: "/images/team/sanaullah.png",
         verified: true,
@@ -163,12 +163,12 @@ export default async function handler(req, res) {
 
       const newPost = {
         id: `post_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-        title: title ? title.trim() : "",
-        content: content.trim(),
+        title: title ? title.trim().replace(/—/g, "-") : "",
+        content: content.trim().replace(/—/g, "-"),
         author: {
           name: author?.name || "Team Member",
-          role: author?.role || "Outmax Specialist",
-          department: author?.department || "Operations",
+          role: (author?.role || "Outmax Specialist").replace(/—/g, "-"),
+          department: (author?.department || "Operations").replace(/—/g, "-"),
           avatar:
             author?.avatar ||
             `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
@@ -181,7 +181,7 @@ export default async function handler(req, res) {
           ? tags
           : String(tags)
               .split(",")
-              .map((t) => t.trim().replace(/^#/, ""))
+              .map((t) => t.trim().replace(/^#/, "").replace(/—/g, "-"))
               .filter(Boolean),
         likesCount: 0,
         likedBy: [],
@@ -194,7 +194,7 @@ export default async function handler(req, res) {
 
       return res.status(201).json({
         success: true,
-        message: "Insight published successfully to the Outmax Team Feed.",
+        message: "Insight published successfully.",
         post: newPost,
       });
     } catch (err) {

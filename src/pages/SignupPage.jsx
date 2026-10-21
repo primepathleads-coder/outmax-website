@@ -160,7 +160,7 @@ const SignupPage = () => {
   return (
     <>
       <SEO
-        title="Join Outmax Team Portal — Member Onboarding"
+        title="Join Outmax Team Portal | Member Onboarding"
         description="Register your Outmax Services team profile with two-factor email verification. Access the internal feed and leadership insights."
         canonicalUrl="/signup"
       />

@@ -80,7 +80,7 @@ export default async function handler(req, res) {
             If you did not request this verification code, you can safely ignore this email.
           </p>
           <div class="footer">
-            Outmax Services Ltd — Corporate Operations &amp; Technology<br>
+            Outmax Services Ltd | Corporate Operations &amp; Technology<br>
             Apt No. 401, Building No. 153-H, Bahria Town Phase 4, Civic Center, Rawalpindi
           </div>
         </div>

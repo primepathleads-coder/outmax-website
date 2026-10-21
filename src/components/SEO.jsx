@@ -9,7 +9,7 @@ export const SEO = ({
 }) => {
   useEffect(() => {
     // Document title formatting (prevent duplicate brand names)
-    let fullTitle = "Outmax Services — Business Process Outsourcing, Performance Marketing & Digital Operations";
+    let fullTitle = "Outmax Services | Business Process Outsourcing, Performance Marketing & Digital Operations";
     if (title) {
       if (title.toLowerCase().includes("outmax")) {
         fullTitle = title;
