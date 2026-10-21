@@ -141,7 +141,7 @@ const LoginPage = () => {
         canonicalUrl="/login"
       />
 
-      <div className="min-h-screen bg-[#08080b] text-white flex flex-col justify-center items-center px-4 py-28 relative overflow-hidden selection:bg-[#cfa355]/30 selection:text-white">
+      <div className="min-h-screen bg-[#08080b] text-white flex flex-col justify-center items-center px-4 py-12 sm:py-16 relative overflow-hidden selection:bg-[#cfa355]/30 selection:text-white">
         {/* Subtle Ambient Glows */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#cfa355]/10 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute bottom-10 left-10 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" />

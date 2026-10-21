@@ -165,7 +165,7 @@ const SignupPage = () => {
         canonicalUrl="/signup"
       />
 
-      <div className="min-h-screen bg-[#08080b] text-white flex flex-col justify-center items-center px-4 py-28 relative overflow-hidden selection:bg-[#cfa355]/30 selection:text-white">
+      <div className="min-h-screen bg-[#08080b] text-white flex flex-col justify-center items-center px-4 py-12 sm:py-16 relative overflow-hidden selection:bg-[#cfa355]/30 selection:text-white">
         <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#cfa355]/10 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="w-full max-w-lg relative z-10">
