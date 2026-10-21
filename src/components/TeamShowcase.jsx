@@ -68,6 +68,15 @@ export const teamMembers = [
     linkedin: "https://linkedin.com/in/hussainmunir1908",
     emails: ["hussain@outmaxservices.com"],
   },
+  {
+    id: "8",
+    name: "Abdullah Khan Sarkani",
+    role: "Commercial Growth & E-Commerce Lead",
+    image: "/images/team/abdullah.png",
+    intro:
+      "Business graduate and seasoned entrepreneur operating at the strategic core of Outmax while building proprietary e-commerce brands. Abdullah guides enterprise clients through optimal retail pricing architectures (MRP), healthy unit profit margins, sales velocity modeling, and sustainable commercial expansion.",
+    emails: ["abdullah@outmaxservices.com"],
+  },
 ];
 
 export const TeamShowcase = ({ members = teamMembers }) => {
