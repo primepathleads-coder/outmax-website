@@ -130,6 +130,7 @@ const Navbar = () => {
     { name: "Insights", path: "/blog" },
     { name: "FAQs", path: "/faqs" },
     { name: "Contact", path: "/contact" },
+    { name: "Team Portal", path: "/feed", isSpecial: true },
   ];
 
   return (
@@ -144,6 +145,24 @@ const Navbar = () => {
         }}
       >
         <OutmaxLogo variant="dark" showTagline={true} size="lg" />
+      </div>
+
+      {/* Top Right Floating Team Portal Button */}
+      <div
+        className="fixed top-5 right-24 sm:right-32 z-40 transition-all duration-500 hidden sm:block"
+        style={{
+          opacity: logoVisible ? 1 : 0,
+          transform: logoVisible ? "translateY(0)" : "translateY(-12px)",
+          pointerEvents: logoVisible ? "auto" : "none",
+        }}
+      >
+        <Link
+          to="/feed"
+          className="flex items-center gap-2 bg-black/80 hover:bg-[#cfa355] text-white hover:text-black border border-white/20 hover:border-[#cfa355] px-4 py-2.5 rounded-full text-[11px] uppercase tracking-[0.18em] font-medium backdrop-blur-md transition-all shadow-lg group"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 group-hover:bg-black animate-pulse" />
+          <span>Team Portal</span>
+        </Link>
       </div>
 
       {/* Signature Awwwards Full-Height Slide-In Drawer Navigation */}
@@ -164,9 +183,16 @@ const Navbar = () => {
               <Link
                 to={item.path}
                 onClick={toggleMenu}
-                className="inline-block transition-all duration-300 cursor-pointer hover:text-gold hover:translate-x-3"
+                className={`inline-flex items-center gap-3 transition-all duration-300 cursor-pointer hover:text-gold hover:translate-x-3 ${
+                  item.isSpecial ? "text-[#cfa355]" : ""
+                }`}
               >
-                {item.name}
+                <span>{item.name}</span>
+                {item.isSpecial && (
+                  <span className="text-[10px] tracking-widest uppercase bg-[#cfa355]/20 text-[#cfa355] px-2.5 py-0.5 rounded-full border border-[#cfa355]/40 align-middle">
+                    Members
+                  </span>
+                )}
               </Link>
             </div>
           ))}
