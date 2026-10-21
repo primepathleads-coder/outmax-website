@@ -24,50 +24,19 @@ import TermsPage from "./pages/TermsPage";
 import CookiePolicyPage from "./pages/CookiePolicyPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
+import Preloader from "./components/Preloader";
+
 const App = () => {
   const { progress } = useProgress();
   const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    // Graceful loader timeout so direct navigation to interior pages never hangs
-    const timer = setTimeout(() => {
-      setIsReady(true);
-    }, 1200);
-
-    if (progress === 100) {
-      setIsReady(true);
-    }
-
-    return () => clearTimeout(timer);
-  }, [progress]);
 
   return (
     <Router>
       <ScrollToTop />
       <ReactLenis root className="relative w-screen min-h-screen overflow-x-hidden bg-[#e5e5e0] font-sans">
-        {/* Editorial Loading Screen */}
+        {/* Premium 3D Bronze Logo Video Reveal Preloader */}
         {!isReady && (
-          <div className="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-black text-white transition-opacity duration-700 font-light">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-xl tracking-[0.3em] uppercase text-gold font-mono">
-                OUTMAX
-              </span>
-              <span className="text-xs uppercase tracking-widest text-white/50">
-                Services Ltd
-              </span>
-            </div>
-
-            <p className="mb-4 text-xs font-mono tracking-widest text-white/70">
-              Initializing Experience {Math.floor(progress || 99)}%
-            </p>
-
-            <div className="relative h-1 overflow-hidden rounded-full w-56 bg-white/20">
-              <div
-                className="absolute top-0 left-0 h-full transition-all duration-300 bg-gold"
-                style={{ width: `${Math.max(progress, 30)}%` }}
-              ></div>
-            </div>
-          </div>
+          <Preloader progress={progress} onComplete={() => setIsReady(true)} />
         )}
 
         <div
