@@ -10,7 +10,7 @@ if (!globalThis.__outmax_otp_store) {
 // Authorized corporate domains
 const ALLOWED_DOMAINS = ["outmaxservices.com", "outmax.com", "primepathleads.com"];
 
-// Approved specific team emails (e.g. personal/testing accounts of core leaders and engineers)
+// Approved specific team emails
 const APPROVED_TEAM_EMAILS = new Set([
   "hamid@outmaxservices.com",
   "moiz@outmaxservices.com",
@@ -45,8 +45,7 @@ export default async function handler(req, res) {
     const normalizedEmail = email.trim().toLowerCase();
     const domain = normalizedEmail.split("@")[1];
 
-    // Strict Team Member Access Control:
-    // Only corporate domain emails or explicitly approved team emails can proceed
+    // Strict Team Member Access Control
     const isAuthorized = ALLOWED_DOMAINS.includes(domain) || APPROVED_TEAM_EMAILS.has(normalizedEmail);
 
     if (!isAuthorized) {
@@ -120,18 +119,45 @@ export default async function handler(req, res) {
     if (process.env.RESEND_API_KEY) {
       try {
         const resend = new Resend(process.env.RESEND_API_KEY);
-        const fromEmail = process.env.RESEND_FROM_EMAIL || "Outmax Services <auth@outmaxservices.com>";
-        await resend.emails.send({
+        // In Resend free sandbox, use onboarding@resend.dev unless custom domain is verified
+        const fromEmail = process.env.RESEND_FROM_EMAIL || "Outmax Services <onboarding@resend.dev>";
+        
+        const response = await resend.emails.send({
           from: fromEmail,
           to: normalizedEmail,
           subject: emailSubject,
           html: emailHtml,
         });
+
+        if (response.error) {
+          throw new Error(response.error.message || "Resend dispatch rejected");
+        }
+
         emailSent = true;
         providerUsed = "resend";
       } catch (err) {
         console.error("[OUTMAX AUTH] Resend failed:", err.message);
         dispatchError = err.message;
+
+        // If it failed because custom domain was not verified, auto-retry with onboarding@resend.dev
+        if (err.message && (err.message.toLowerCase().includes("domain") || err.message.toLowerCase().includes("from"))) {
+          try {
+            const resend = new Resend(process.env.RESEND_API_KEY);
+            const retryRes = await resend.emails.send({
+              from: "Outmax Services <onboarding@resend.dev>",
+              to: normalizedEmail,
+              subject: emailSubject,
+              html: emailHtml,
+            });
+            if (!retryRes.error) {
+              emailSent = true;
+              providerUsed = "resend";
+              dispatchError = null;
+            }
+          } catch (retryErr) {
+            console.error("[OUTMAX AUTH] Resend retry failed:", retryErr.message);
+          }
+        }
       }
     }
 
@@ -166,20 +192,29 @@ export default async function handler(req, res) {
         });
         emailSent = true;
         providerUsed = "smtp";
+        dispatchError = null;
       } catch (err) {
         console.error("[OUTMAX AUTH] SMTP failed:", err.message);
         dispatchError = err.message;
       }
     }
 
+    let feedbackMessage = "";
+    if (emailSent) {
+      feedbackMessage = `Verification passcode sent to ${normalizedEmail}`;
+    } else if (dispatchError && dispatchError.includes("testing emails to your own email address")) {
+      feedbackMessage = `Resend is in testing mode. You can test with your Resend signup email, or verify 'outmaxservices.com' in Resend domains to send to any team member.`;
+    } else if (dispatchError) {
+      feedbackMessage = `Email dispatch notice: ${dispatchError}`;
+    } else {
+      feedbackMessage = `Email service credentials are not yet configured in environment variables.`;
+    }
+
     return res.status(200).json({
       success: true,
       emailSent,
       provider: providerUsed,
-      message: emailSent
-        ? `Verification passcode sent to ${normalizedEmail}`
-        : `Email service credentials are not yet configured in environment variables.`,
-      // Always pass the generated code when email provider is not yet set up so testing never blocks
+      message: feedbackMessage,
       demoCode: !emailSent ? otp : undefined,
       dispatchError: !emailSent ? dispatchError : undefined,
     });
