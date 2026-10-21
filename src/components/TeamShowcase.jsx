@@ -57,6 +57,17 @@ export const teamMembers = [
       "The tactical engine of our marketing division. Omar engineers growth campaigns that consistently crush acquisition targets.",
     emails: ["omar@outmaxservices.com"],
   },
+  {
+    id: "7",
+    name: "Hussain Munir",
+    role: "Full-Stack Engineer",
+    image: "/images/team/hussain.png",
+    intro:
+      "Full-Stack Engineer with a foundation in Computer Engineering from GIKI. Specializes in bridging the gap between hardware-level precision and modern, high-performance digital experiences. From architecting event-driven disaster response platforms to developing real-time applications for community safety, focused on building scalable systems that solve tangible problems with high-efficiency code.",
+    github: "https://github.com/hussainmunir1908",
+    linkedin: "https://linkedin.com/in/hussainmunir1908",
+    emails: ["hussain@outmaxservices.com"],
+  },
 ];
 
 export const TeamShowcase = ({ members = teamMembers }) => {
@@ -219,7 +230,7 @@ export const TeamShowcase = ({ members = teamMembers }) => {
                     {selectedMember.intro}
                   </p>
 
-                  <div className="flex flex-col gap-2 mb-6">
+                  <div className="flex flex-col gap-2.5 mb-6">
                     {selectedMember.emails.map((email, idx) => (
                       <a
                         key={idx}
@@ -227,9 +238,31 @@ export const TeamShowcase = ({ members = teamMembers }) => {
                         className="flex items-center gap-2 text-xs text-white/90 hover:text-gold transition-colors font-mono"
                       >
                         <Icon icon="solar:letter-bold" className="text-gold size-4" />
-                        {email}
+                        <span>{email}</span>
                       </a>
                     ))}
+                    {selectedMember.github && (
+                      <a
+                        href={selectedMember.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-xs text-white/90 hover:text-gold transition-colors font-mono"
+                      >
+                        <Icon icon="mdi:github" className="text-gold size-4" />
+                        <span>{selectedMember.github.replace("https://", "")}</span>
+                      </a>
+                    )}
+                    {selectedMember.linkedin && (
+                      <a
+                        href={selectedMember.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-xs text-white/90 hover:text-gold transition-colors font-mono"
+                      >
+                        <Icon icon="mdi:linkedin" className="text-gold size-4" />
+                        <span>{selectedMember.linkedin.replace("https://", "")}</span>
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
