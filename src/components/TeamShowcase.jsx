@@ -77,6 +77,15 @@ export const teamMembers = [
       "Business graduate and seasoned entrepreneur operating at the strategic core of Outmax while building proprietary e-commerce brands. Abdullah guides enterprise clients through optimal retail pricing architectures (MRP), healthy unit profit margins, sales velocity modeling, and sustainable commercial expansion.",
     emails: ["abdullah@outmaxservices.com"],
   },
+  {
+    id: "9",
+    name: "Sanaullah Khan",
+    role: "Head of Business Development (Baku, Azerbaijan)",
+    image: "/images/team/sanaullah.png",
+    intro:
+      "Directing Outmax's regional business development and enterprise client expansion across Baku, Azerbaijan and the Caspian corridor. Sanaullah leads international client acquisition, strategic BPO partnerships, and cross-border operational alignment.",
+    emails: ["sanaullah@outmaxservices.com"],
+  },
 ];
 
 export const TeamShowcase = ({ members = teamMembers }) => {
