@@ -15,8 +15,8 @@ export const PortfolioPage = () => {
   return (
     <div className="pt-28 pb-24 text-black">
       <SEO
-        title="Portfolio & Case Capabilities"
-        description="Explore Outmax Services Ltd's recent digital builds: legal-claims lead generation portals, hospitality brand platforms, e-commerce storefronts, and wellness platforms."
+        title="Client Portfolio & Case Studies | Outmax Services"
+        description="Explore documented client builds by Outmax Services: Camp Lejeune mass-tort lead qualification portal, Awwwards-honored web architecture for Le Mugs, and $1.88M+ Meta ad campaigns."
       />
 
       {/* Hero Header */}

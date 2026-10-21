@@ -16,8 +16,8 @@ export const HomePage = () => {
   return (
     <div className="relative">
       <SEO
-        title="BPO · Performance Marketing · Digital Solutions"
-        description="Outmax Services Ltd is an outsourcing and digital growth partner helping businesses streamline operations, reduce costs, and scale revenue."
+        title="Outmax Services — Business Process Outsourcing, Performance Marketing & Digital Operations"
+        description="Scale business operations with Outmax Services. Specializing in 24/7 dedicated BPO teams, legal intake lead qualification, high-velocity Meta media buying, and custom web builds."
       />
 
       {/* 3D Hero Section */}

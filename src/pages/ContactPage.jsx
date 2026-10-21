@@ -124,8 +124,8 @@ export const ContactPage = () => {
   return (
     <div className="pt-28 pb-24 text-black">
       <SEO
-        title="Contact & Consultation"
-        description="Initiate a B2B consultation with Outmax Services Ltd. Located at Civic Center, Bahria Town Phase 4, Rawalpindi, Pakistan."
+        title="Contact Outmax Services — Start Your Project or Request an Audit"
+        description="Get in touch with Outmax Services leadership for dedicated BPO squad placement, paid advertising management, or custom digital builds. Rapid 24-hour turnaround."
       />
 
       {/* Hero Header */}

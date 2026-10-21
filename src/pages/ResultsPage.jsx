@@ -8,8 +8,8 @@ export const ResultsPage = () => {
   return (
     <div className="pt-28 pb-24 text-black">
       <SEO
-        title="Documented Results & Capabilities"
-        description="Review documented commercial results for Outmax Services Ltd: $1.88M+ Meta ad spend across 462 campaigns, $59K+ 30-day AFD revenue, and 8M+ emails with 12.59% CTOR."
+        title="Verified Results & Performance Data | Outmax Services"
+        description="Review audited operational metrics from Outmax Services: $1.88M+ Meta ad spend across 462 campaigns, 8M+ monthly email delivery at 12.59% CTOR, and high-margin affiliate networks."
       />
 
       {/* Hero Header */}

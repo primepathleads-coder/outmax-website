@@ -22,8 +22,8 @@ export const ServicesPage = () => {
   return (
     <div className="pt-28 pb-24 text-black">
       <SEO
-        title="Services Overview"
-        description="Explore Outmax Services Ltd's 11 dedicated service offerings across BPO, customer support, sales, media buying, affiliate marketing, ad monetization, web engineering, branding, HR, and bookkeeping."
+        title="Operational Services & Outsourcing Solutions | Outmax Services"
+        description="Explore 11 core services by Outmax Services: inbound and outbound BPO, omnichannel customer support, paid media buying, affiliate management, web development, and financial bookkeeping."
       />
 
       {/* Hero Header */}
