@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { useAuth } from "../context/AuthContext";
@@ -133,6 +133,12 @@ const FeedDashboardPage = () => {
   const [newTags, setNewTags] = useState("");
   const [newMediaUrl, setNewMediaUrl] = useState("");
 
+  // Local device image upload state
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [filePreview, setFilePreview] = useState("");
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
+  const fileInputRef = useRef(null);
+
   // Comment states
   const [activeCommentPostId, setActiveCommentPostId] = useState(null);
   const [commentText, setCommentText] = useState({});
@@ -174,6 +180,76 @@ const FeedDashboardPage = () => {
     } catch {
       return "Recently";
     }
+  };
+
+  // Canvas-based local image compression for fast upload from mobile/desktop
+  const compressImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const maxWidth = 1400;
+          const maxHeight = 1400;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxWidth || height > maxHeight) {
+            if (width > height) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            } else {
+              width = Math.round((width * maxHeight) / height);
+              height = maxHeight;
+            }
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.85);
+          resolve(compressedDataUrl);
+        };
+        img.onerror = (err) => reject(err);
+      };
+      reader.onerror = (err) => reject(err);
+    });
+  };
+
+  const handleFileSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      showToast("Please choose an image file (PNG, JPG, WebP)");
+      return;
+    }
+
+    setIsProcessingImage(true);
+    try {
+      const compressed = await compressImage(file);
+      setSelectedFile(file);
+      setFilePreview(compressed);
+      setNewMediaUrl(compressed);
+      showToast(`Attached ${file.name}`);
+    } catch (err) {
+      console.error("Image processing error", err);
+      showToast("Failed to process image");
+    } finally {
+      setIsProcessingImage(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedFile(null);
+    setFilePreview("");
+    setNewMediaUrl("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handlePublishPost = async (e) => {
@@ -226,6 +302,9 @@ const FeedDashboardPage = () => {
       setNewContent("");
       setNewTags("");
       setNewMediaUrl("");
+      setSelectedFile(null);
+      setFilePreview("");
+      if (fileInputRef.current) fileInputRef.current.value = "";
       setComposerOpen(false);
       showToast("Insight published");
     } catch (err) {
@@ -340,6 +419,43 @@ const FeedDashboardPage = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // Strict Team Member Route Protection
+  if (!isAuthenticated) {
+    return (
+      <>
+        <SEO
+          title="Team Access Restricted | Outmax Services"
+          description="Authentication required to view internal Outmax Services operations feed."
+          canonicalUrl="/feed"
+        />
+        <div className="min-h-screen bg-[#070709] text-white flex flex-col items-center justify-center px-4 py-20">
+          <div className="max-w-md w-full bg-[#0c0c10] border border-white/[0.08] rounded-xl p-8 text-center space-y-4 shadow-2xl">
+            <div className="w-12 h-12 bg-white/[0.04] border border-white/[0.08] rounded-lg flex items-center justify-center mx-auto text-[#cfa355]">
+              <Icon icon="ph:shield-warning" className="text-2xl" />
+            </div>
+            <h1 className="text-xl font-medium text-white tracking-tight">
+              Team Member Access Only
+            </h1>
+            <p className="text-xs text-neutral-400 leading-relaxed font-light">
+              This operational intelligence stream is strictly restricted to verified Outmax Services partners, engineers, and executive desks.
+            </p>
+            <div className="pt-2">
+              <Link
+                to="/login"
+                className="w-full inline-block bg-[#cfa355] hover:bg-[#d9b165] text-[#070709] font-medium text-xs py-3 px-4 rounded-md transition-colors"
+              >
+                Authenticate with Corporate Email
+              </Link>
+            </div>
+            <p className="text-[11px] text-neutral-600 pt-2">
+              Requires email under @outmaxservices.com or authorized team whitelist.
+            </p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <SEO
@@ -402,81 +518,72 @@ const FeedDashboardPage = () => {
                 <span>New Insight</span>
               </button>
 
-              {user ? (
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setRoleSwitcherOpen(!roleSwitcherOpen)}
-                    className="flex items-center gap-2 bg-[#111116] border border-white/[0.08] hover:border-white/20 rounded-md px-2.5 py-1.5 transition-colors cursor-pointer text-left"
-                  >
-                    <img
-                      src={user.avatar}
-                      alt={user.name}
-                      className="w-5 h-5 rounded-sm object-cover"
-                    />
-                    <span className="text-xs text-neutral-200 font-medium hidden sm:inline">
-                      {user.name.split(" ")[0]}
-                    </span>
-                    <Icon icon="ph:caret-down" className="text-neutral-500 text-xs" />
-                  </button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setRoleSwitcherOpen(!roleSwitcherOpen)}
+                  className="flex items-center gap-2 bg-[#111116] border border-white/[0.08] hover:border-white/20 rounded-md px-2.5 py-1.5 transition-colors cursor-pointer text-left"
+                >
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="w-5 h-5 rounded-sm object-cover"
+                  />
+                  <span className="text-xs text-neutral-200 font-medium hidden sm:inline">
+                    {user.name.split(" ")[0]}
+                  </span>
+                  <Icon icon="ph:caret-down" className="text-neutral-500 text-xs" />
+                </button>
 
-                  {/* Profile Dropdown */}
-                  {roleSwitcherOpen && (
-                    <div className="absolute right-0 mt-2 w-64 bg-[#111116] border border-white/[0.08] rounded-md shadow-2xl p-2 z-50">
-                      <div className="px-2.5 py-2 border-b border-white/[0.06]">
-                        <p className="text-xs font-medium text-white">{user.name}</p>
-                        <p className="text-[11px] text-neutral-400">{user.role}</p>
-                        <p className="text-[10px] text-neutral-500 font-mono mt-0.5">{user.email}</p>
-                      </div>
+                {/* Profile Dropdown */}
+                {roleSwitcherOpen && (
+                  <div className="absolute right-0 mt-2 w-64 bg-[#111116] border border-white/[0.08] rounded-md shadow-2xl p-2 z-50">
+                    <div className="px-2.5 py-2 border-b border-white/[0.06]">
+                      <p className="text-xs font-medium text-white">{user.name}</p>
+                      <p className="text-[11px] text-neutral-400">{user.role}</p>
+                      <p className="text-[10px] text-neutral-500 font-mono mt-0.5">{user.email}</p>
+                    </div>
 
-                      <div className="py-1">
-                        <span className="text-[10px] uppercase tracking-wider text-neutral-500 px-2.5 py-1 block">
-                          Switch Identity
-                        </span>
-                        {[
-                          { key: "hamid", label: "Hamid Iqbal Khan (CEO)" },
-                          { key: "hussain", label: "Hussain Munir (Tech)" },
-                          { key: "abdullah", label: "Abdullah Sarkani (E-Com)" },
-                          { key: "sanaullah", label: "Sanaullah Khan (Baku)" },
-                        ].map((item) => (
-                          <button
-                            key={item.key}
-                            type="button"
-                            onClick={() => {
-                              loginAsDemo(item.key);
-                              setRoleSwitcherOpen(false);
-                            }}
-                            className="w-full text-left px-2.5 py-1.5 text-xs text-neutral-300 hover:text-white hover:bg-white/[0.04] rounded-sm transition-colors"
-                          >
-                            {item.label}
-                          </button>
-                        ))}
-                      </div>
-
-                      <div className="pt-1 border-t border-white/[0.06]">
+                    <div className="py-1">
+                      <span className="text-[10px] uppercase tracking-wider text-neutral-500 px-2.5 py-1 block">
+                        Switch Identity
+                      </span>
+                      {[
+                        { key: "hamid", label: "Hamid Iqbal Khan (CEO)" },
+                        { key: "hussain", label: "Hussain Munir (Tech)" },
+                        { key: "abdullah", label: "Abdullah Sarkani (E-Com)" },
+                        { key: "sanaullah", label: "Sanaullah Khan (Baku)" },
+                      ].map((item) => (
                         <button
+                          key={item.key}
                           type="button"
                           onClick={() => {
-                            logout();
+                            loginAsDemo(item.key);
                             setRoleSwitcherOpen(false);
                           }}
-                          className="w-full text-left px-2.5 py-1.5 text-xs text-red-400 hover:bg-white/[0.04] rounded-sm transition-colors flex items-center justify-between"
+                          className="w-full text-left px-2.5 py-1.5 text-xs text-neutral-300 hover:text-white hover:bg-white/[0.04] rounded-sm transition-colors cursor-pointer"
                         >
-                          <span>Sign Out</span>
-                          <Icon icon="ph:sign-out" className="text-xs" />
+                          {item.label}
                         </button>
-                      </div>
+                      ))}
                     </div>
-                  )}
-                </div>
-              ) : (
-                <Link
-                  to="/login"
-                  className="bg-[#cfa355] hover:bg-[#d9b165] text-[#070709] px-3 py-1.5 rounded-md text-xs font-medium transition-all"
-                >
-                  Log In
-                </Link>
-              )}
+
+                    <div className="pt-1 border-t border-white/[0.06]">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          logout();
+                          setRoleSwitcherOpen(false);
+                        }}
+                        className="w-full text-left px-2.5 py-1.5 text-xs text-red-400 hover:bg-white/[0.04] rounded-sm transition-colors flex items-center justify-between cursor-pointer"
+                      >
+                        <span>Sign Out</span>
+                        <Icon icon="ph:sign-out" className="text-xs" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </header>
@@ -514,7 +621,7 @@ const FeedDashboardPage = () => {
                 <button
                   type="button"
                   onClick={() => setComposerOpen(false)}
-                  className="text-neutral-500 hover:text-neutral-300 text-xs"
+                  className="text-neutral-500 hover:text-neutral-300 text-xs cursor-pointer"
                 >
                   Close
                 </button>
@@ -574,30 +681,94 @@ const FeedDashboardPage = () => {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[11px] text-neutral-400 mb-1">
-                    Attachment Image URL (Optional)
-                  </label>
-                  <input
-                    type="url"
-                    placeholder="https://..."
-                    value={newMediaUrl}
-                    onChange={(e) => setNewMediaUrl(e.target.value)}
-                    className="w-full bg-[#15151c] border border-white/[0.08] focus:border-[#cfa355]/60 rounded-md px-3 py-2 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none"
-                  />
+                {/* Local Device Image Upload Section */}
+                <div className="pt-1 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-[11px] text-neutral-400">
+                      Media Attachment
+                    </label>
+                    {isProcessingImage && (
+                      <span className="text-[10px] text-[#cfa355]">Optimizing image...</span>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3">
+                    {/* Hidden Native File Input */}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileSelect}
+                      className="hidden"
+                    />
+
+                    {/* Local File Picker Button */}
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex items-center gap-2 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/20 px-3 py-2 rounded-md text-xs text-neutral-200 transition-colors cursor-pointer"
+                    >
+                      <Icon icon="ph:image-square" className="text-base text-[#cfa355]" />
+                      <span>{selectedFile ? "Replace Device Image" : "Upload Image from Device"}</span>
+                    </button>
+
+                    <span className="text-[11px] text-neutral-500">or enter image link below</span>
+                  </div>
+
+                  {/* Thumbnail Preview of Local Upload */}
+                  {filePreview && (
+                    <div className="rounded-lg border border-white/[0.08] bg-[#15151c] p-2.5 flex items-center justify-between gap-3 mt-2">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <img
+                          src={filePreview}
+                          alt="Local upload preview"
+                          className="w-14 h-14 rounded-md object-cover border border-white/[0.08] shrink-0"
+                        />
+                        <div className="min-w-0">
+                          <p className="text-xs text-neutral-200 font-medium truncate max-w-[260px]">
+                            {selectedFile?.name || "Local image attached"}
+                          </p>
+                          <p className="text-[10px] text-neutral-500 mt-0.5">
+                            {selectedFile ? `${(selectedFile.size / 1024).toFixed(0)} KB · Optimized for fast loading` : "Image attached"}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleRemoveImage}
+                        className="text-xs text-neutral-400 hover:text-red-400 px-2 py-1 rounded transition-colors cursor-pointer"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Optional External Image URL input */}
+                  {!filePreview && (
+                    <input
+                      type="url"
+                      placeholder="Optional image URL (https://...)"
+                      value={newMediaUrl}
+                      onChange={(e) => setNewMediaUrl(e.target.value)}
+                      className="w-full bg-[#15151c] border border-white/[0.08] focus:border-[#cfa355]/60 rounded-md px-3 py-2 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none"
+                    />
+                  )}
                 </div>
 
                 <div className="flex items-center justify-end gap-2 pt-2">
                   <button
                     type="button"
-                    onClick={() => setComposerOpen(false)}
-                    className="text-xs text-neutral-400 hover:text-white px-3 py-1.5 transition-colors"
+                    onClick={() => {
+                      setComposerOpen(false);
+                      handleRemoveImage();
+                    }}
+                    className="text-xs text-neutral-400 hover:text-white px-3 py-1.5 transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    disabled={isPosting || !newContent.trim()}
+                    disabled={isPosting || !newContent.trim() || isProcessingImage}
                     className="bg-[#cfa355] hover:bg-[#d9b165] text-[#070709] px-4 py-1.5 rounded-md text-xs font-medium transition-all disabled:opacity-40 cursor-pointer"
                   >
                     {isPosting ? "Publishing..." : "Publish Entry"}

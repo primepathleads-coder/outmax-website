@@ -7,8 +7,22 @@ if (!globalThis.__outmax_otp_store) {
   globalThis.__outmax_otp_store = new Map();
 }
 
+// Authorized corporate domains
+const ALLOWED_DOMAINS = ["outmaxservices.com", "outmax.com", "primepathleads.com"];
+
+// Approved specific team emails (e.g. personal/testing accounts of core leaders and engineers)
+const APPROVED_TEAM_EMAILS = new Set([
+  "hamid@outmaxservices.com",
+  "moiz@outmaxservices.com",
+  "hussain@outmaxservices.com",
+  "hussainmunir1908@gmail.com",
+  "abdullah@outmaxservices.com",
+  "sanaullah@outmaxservices.com",
+  "info@outmaxservices.com",
+  "primepathleads@gmail.com",
+]);
+
 export default async function handler(req, res) {
-  // CORS & method validation
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -25,16 +39,27 @@ export default async function handler(req, res) {
     const { email, name = "Team Member", action = "login" } = req.body || {};
 
     if (!email || !email.includes("@")) {
-      return res.status(400).json({ error: "A valid corporate or personal email is required." });
+      return res.status(400).json({ error: "A valid corporate email address is required." });
     }
 
     const normalizedEmail = email.trim().toLowerCase();
+    const domain = normalizedEmail.split("@")[1];
+
+    // Strict Team Member Access Control:
+    // Only corporate domain emails or explicitly approved team emails can proceed
+    const isAuthorized = ALLOWED_DOMAINS.includes(domain) || APPROVED_TEAM_EMAILS.has(normalizedEmail);
+
+    if (!isAuthorized) {
+      return res.status(403).json({
+        error: "Access restricted: Only authorized Outmax Services team members and corporate desks have access to this portal. Please use your corporate email (@outmaxservices.com) or contact leadership.",
+      });
+    }
 
     // Generate secure 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
 
-    // Store in global cache
+    // Store in memory
     globalThis.__outmax_otp_store.set(normalizedEmail, {
       otp,
       expiresAt,
@@ -42,46 +67,45 @@ export default async function handler(req, res) {
       action,
     });
 
-    console.log(`[OUTMAX AUTH] Generated OTP for ${normalizedEmail}: ${otp} (Action: ${action})`);
+    console.log(`[OUTMAX AUTH] Generated OTP for authorized member ${normalizedEmail}: ${otp}`);
 
     // Branded HTML Email Template
-    const emailSubject = `Your Outmax Services Verification Code: ${otp}`;
+    const emailSubject = `Outmax Services Verification Passcode: ${otp}`;
     const emailHtml = `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <style>
-          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #09090b; color: #ffffff; margin: 0; padding: 24px; }
-          .container { max-width: 540px; margin: 0 auto; background: #121217; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 36px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-          .logo { color: #cfa355; font-size: 22px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; text-align: center; }
-          .tagline { color: rgba(255,255,255,0.5); font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin-top: -18px; margin-bottom: 30px; text-align: center; }
-          .greeting { font-size: 16px; color: rgba(255,255,255,0.9); margin-bottom: 16px; }
-          .body-text { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.7); margin-bottom: 28px; }
-          .otp-box { background: rgba(207, 163, 85, 0.08); border: 1px solid rgba(207, 163, 85, 0.35); border-radius: 12px; padding: 20px; text-align: center; margin: 24px 0; }
-          .otp-code { font-family: 'Courier New', Courier, monospace; font-size: 36px; font-weight: 700; color: #cfa355; letter-spacing: 8px; margin: 0; }
-          .otp-expiry { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 8px; text-transform: uppercase; letter-spacing: 0.1em; }
-          .footer { margin-top: 36px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; line-height: 1.5; }
+          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #08080b; color: #ffffff; margin: 0; padding: 24px; }
+          .container { max-width: 500px; margin: 0 auto; background: #0f0f14; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 32px; }
+          .logo { color: #cfa355; font-size: 16px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 24px; }
+          .title { font-size: 20px; font-weight: 500; color: #ffffff; margin-bottom: 12px; }
+          .body-text { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.7); margin-bottom: 24px; }
+          .otp-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(207, 163, 85, 0.3); border-radius: 8px; padding: 18px; text-align: center; margin: 20px 0; }
+          .otp-code { font-family: monospace; font-size: 32px; font-weight: 700; color: #cfa355; letter-spacing: 6px; margin: 0; }
+          .otp-expiry { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.1em; }
+          .footer { margin-top: 32px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: rgba(255,255,255,0.35); line-height: 1.5; }
         </style>
       </head>
       <body>
         <div class="container">
-          <div class="logo">Outmax Services</div>
-          <div class="tagline">Enterprise Operations &amp; Team Hub</div>
-          <p class="greeting">Hello ${name},</p>
+          <div class="logo">Outmax Services / Portal</div>
+          <div class="title">Authentication Passcode</div>
           <p class="body-text">
-            Use the following one-time verification passcode to complete your ${action === "signup" ? "team member registration" : "portal authentication"} for the Outmax Services internal platform.
+            Hello ${name},<br><br>
+            Use the one-time verification passcode below to access the Outmax Services internal operations feed and member portal.
           </p>
           <div class="otp-box">
             <div class="otp-code">${otp}</div>
-            <div class="otp-expiry">Valid for 10 minutes • Do not share this code</div>
+            <div class="otp-expiry">Valid for 10 minutes | Confidential</div>
           </div>
-          <p class="body-text" style="font-size: 12px; color: rgba(255,255,255,0.5);">
-            If you did not request this verification code, you can safely ignore this email.
+          <p class="body-text" style="font-size: 11px; color: rgba(255,255,255,0.4);">
+            This passcode is strictly intended for authorized personnel. If you did not initiate this request, notify the engineering desk immediately.
           </p>
           <div class="footer">
-            Outmax Services Ltd | Corporate Operations &amp; Technology<br>
-            Apt No. 401, Building No. 153-H, Bahria Town Phase 4, Civic Center, Rawalpindi
+            Outmax Services Ltd | Corporate Operations Desk<br>
+            Bahria Town Phase 4, Civic Center, Rawalpindi
           </div>
         </div>
       </body>
@@ -89,9 +113,10 @@ export default async function handler(req, res) {
     `;
 
     let emailSent = false;
-    let providerUsed = "mock";
+    let providerUsed = "none";
+    let dispatchError = null;
 
-    // 1. Try Resend if RESEND_API_KEY is configured
+    // 1. Try Resend if configured
     if (process.env.RESEND_API_KEY) {
       try {
         const resend = new Resend(process.env.RESEND_API_KEY);
@@ -105,25 +130,36 @@ export default async function handler(req, res) {
         emailSent = true;
         providerUsed = "resend";
       } catch (err) {
-        console.error("[OUTMAX AUTH] Resend failed, falling back:", err.message);
+        console.error("[OUTMAX AUTH] Resend failed:", err.message);
+        dispatchError = err.message;
       }
     }
 
-    // 2. Try SMTP via Nodemailer if SMTP credentials are provided
-    if (!emailSent && process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    // 2. Try SMTP if configured (Gmail, Zoho, Hostinger, AWS SES, etc.)
+    if (!emailSent && process.env.SMTP_USER && process.env.SMTP_PASS) {
       try {
-        const transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST,
-          port: Number(process.env.SMTP_PORT) || 587,
-          secure: Number(process.env.SMTP_PORT) === 465,
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
-          },
-        });
+        const transportConfig = process.env.SMTP_HOST
+          ? {
+              host: process.env.SMTP_HOST,
+              port: Number(process.env.SMTP_PORT) || 587,
+              secure: Number(process.env.SMTP_PORT) === 465,
+              auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+              },
+            }
+          : {
+              service: "gmail",
+              auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+              },
+            };
+
+        const transporter = nodemailer.createTransport(transportConfig);
 
         await transporter.sendMail({
-          from: `"Outmax Services" <${process.env.SMTP_USER}>`,
+          from: `"Outmax Services" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
           to: normalizedEmail,
           subject: emailSubject,
           html: emailHtml,
@@ -132,15 +168,20 @@ export default async function handler(req, res) {
         providerUsed = "smtp";
       } catch (err) {
         console.error("[OUTMAX AUTH] SMTP failed:", err.message);
+        dispatchError = err.message;
       }
     }
 
     return res.status(200).json({
       success: true,
-      message: `A verification code was sent to ${normalizedEmail}`,
+      emailSent,
       provider: providerUsed,
-      // In development or when keys are not yet configured on Vercel, pass the code so testing never blocks
+      message: emailSent
+        ? `Verification passcode sent to ${normalizedEmail}`
+        : `Email service credentials are not yet configured in environment variables.`,
+      // Always pass the generated code when email provider is not yet set up so testing never blocks
       demoCode: !emailSent ? otp : undefined,
+      dispatchError: !emailSent ? dispatchError : undefined,
     });
   } catch (error) {
     console.error("[OUTMAX AUTH ERROR]", error);

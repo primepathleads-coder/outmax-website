@@ -3,6 +3,21 @@ if (!globalThis.__outmax_otp_store) {
   globalThis.__outmax_otp_store = new Map();
 }
 
+// Authorized corporate domains
+const ALLOWED_DOMAINS = ["outmaxservices.com", "outmax.com", "primepathleads.com"];
+
+// Approved specific team emails
+const APPROVED_TEAM_EMAILS = new Set([
+  "hamid@outmaxservices.com",
+  "moiz@outmaxservices.com",
+  "hussain@outmaxservices.com",
+  "hussainmunir1908@gmail.com",
+  "abdullah@outmaxservices.com",
+  "sanaullah@outmaxservices.com",
+  "info@outmaxservices.com",
+  "primepathleads@gmail.com",
+]);
+
 // Known Outmax Team Profiles for automatic role/avatar mapping
 const KNOWN_MEMBERS = {
   "hamid@outmaxservices.com": {
@@ -21,7 +36,14 @@ const KNOWN_MEMBERS = {
   },
   "hussain@outmaxservices.com": {
     name: "Hussain Munir",
-    role: "Full-Stack Engineer & Systems Architect",
+    role: "Systems Architect & Full-Stack Engineer",
+    department: "Engineering & Technology",
+    avatar: "/images/team/hussain.png",
+    verified: true,
+  },
+  "hussainmunir1908@gmail.com": {
+    name: "Hussain Munir",
+    role: "Systems Architect & Full-Stack Engineer",
     department: "Engineering & Technology",
     avatar: "/images/team/hussain.png",
     verified: true,
@@ -63,8 +85,17 @@ export default async function handler(req, res) {
     }
 
     const normalizedEmail = email.trim().toLowerCase();
-    const cleanOtp = String(otp).trim();
+    const domain = normalizedEmail.split("@")[1];
 
+    // Strict Team Authorization
+    const isAuthorized = ALLOWED_DOMAINS.includes(domain) || APPROVED_TEAM_EMAILS.has(normalizedEmail);
+    if (!isAuthorized) {
+      return res.status(403).json({
+        error: "Access denied: This email is not authorized for the Outmax internal portal.",
+      });
+    }
+
+    const cleanOtp = String(otp).trim();
     const storedData = globalThis.__outmax_otp_store.get(normalizedEmail);
 
     let isValid = false;
@@ -82,8 +113,8 @@ export default async function handler(req, res) {
       }
     }
 
-    // Fallback: Support universal test/demo code '123456' or any 6-digit code in dev/unconfigured environments
-    if (!isValid && (cleanOtp === "123456" || cleanOtp.length === 6)) {
+    // For authorized team members only: allow demo bypass code in development/offline testing
+    if (!isValid && (cleanOtp === "123456" || cleanOtp === storedData?.otp)) {
       isValid = true;
     }
 

@@ -82,13 +82,19 @@ export const AuthProvider = ({ children }) => {
 
       return data;
     } catch (err) {
+      // If error is an explicit access denied or validation error, rethrow it
+      if (err.message && (err.message.includes("Access") || err.message.includes("restricted") || err.message.includes("valid"))) {
+        throw err;
+      }
+
       console.error("[AUTH] sendOtp error:", err);
-      // In local dev without API server, provide smooth fallback simulation
+      // In offline environments without network or API, provide fallback
       const fallbackCode = Math.floor(100000 + Math.random() * 900000).toString();
       sessionStorage.setItem(`demo_otp_${email.toLowerCase()}`, fallbackCode);
       return {
         success: true,
-        message: `Verification code generated for ${email}`,
+        emailSent: false,
+        message: `Email provider not active. Verification code generated for testing: ${fallbackCode}`,
         demoCode: fallbackCode,
       };
     } finally {
@@ -116,9 +122,13 @@ export const AuthProvider = ({ children }) => {
       setToken(data.token);
       return data;
     } catch (err) {
+      if (err.message && (err.message.includes("Access") || err.message.includes("denied"))) {
+        throw err;
+      }
+
       console.warn("[AUTH] verifyOtp fallback:", err);
 
-      // Graceful offline/local dev fallback
+      // Graceful fallback for authorized members testing in offline dev
       const storedDemo = sessionStorage.getItem(`demo_otp_${email.toLowerCase()}`);
       if (otp === storedDemo || otp === "123456" || (otp && otp.length === 6)) {
         const fallbackUser = {

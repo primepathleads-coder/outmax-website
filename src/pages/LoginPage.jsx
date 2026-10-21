@@ -50,7 +50,11 @@ const LoginPage = () => {
       const res = await sendOtp({ email, action: "login" });
       setStep(2);
       setCountdown(60);
-      setInfoMessage(`A 6-digit verification code has been dispatched to ${email}`);
+      if (res.emailSent) {
+        setInfoMessage(`Verification passcode dispatched to ${email}. Check your inbox (and spam folder).`);
+      } else {
+        setInfoMessage(`Email service (Resend / SMTP) not yet configured in Vercel environment. Use test code below.`);
+      }
       if (res.demoCode) {
         setDemoCodeHint(res.demoCode);
       }

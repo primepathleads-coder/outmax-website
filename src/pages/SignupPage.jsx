@@ -74,7 +74,11 @@ const SignupPage = () => {
       });
       setStep(2);
       setCountdown(60);
-      setInfoMessage(`Verification passcode dispatched to ${formData.email}`);
+      if (res.emailSent) {
+        setInfoMessage(`Verification passcode dispatched to ${formData.email}. Check your inbox.`);
+      } else {
+        setInfoMessage(`Email service (Resend / SMTP) not yet configured in Vercel environment. Use test code below.`);
+      }
       if (res.demoCode) {
         setDemoCodeHint(res.demoCode);
       }
