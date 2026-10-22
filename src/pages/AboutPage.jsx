@@ -132,8 +132,8 @@ export const AboutPage = () => {
                 <p className="font-mono text-xs tracking-widest uppercase text-gold mb-4">
                   Chief Technology Officer & Board Member
                 </p>
-                <p className="text-white/70 leading-relaxed text-xs sm:text-sm max-w-sm mx-auto font-light">
-                  Spearheading technological innovation and scalable architecture. Dr. Munir ensures Outmax operational infrastructure remains at the bleeding edge of global tech standards.
+                <p className="text-white/70 leading-relaxed text-xs sm:text-sm max-w-md mx-auto font-light">
+                  Distinguished Engineer, Pride of Performance recipient, and PhD in Structural Dynamics & Aeroelasticity (Gold Medalist) with over 35 years of defence sector experience across design, development, testing, production, and lifecycle support of sub-assemblies & complete systems, as well as relifing of submarines and aircrafts. A consultant across diverse engineering disciplines and member of AIAA, SAMPE, ASME, IIAV, and IEEE, steering Outmax's technological innovation and mission-critical engineering.
                 </p>
               </div>
             </div>

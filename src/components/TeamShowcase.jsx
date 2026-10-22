@@ -9,7 +9,7 @@ export const teamMembers = [
     role: "Chief Technology Officer & Board Member",
     image: "/images/executives/azhar.png",
     intro:
-      "Spearheading technological innovation and scalable architecture. Dr. Munir ensures Outmax operational infrastructure remains at the bleeding edge of global tech standards.",
+      "Distinguished Engineer, Pride of Performance recipient, and PhD in Structural Dynamics & Aeroelasticity (Gold Medalist) with over 35 years of experience in the defence sector—particularly in design, development, testing, production, and lifecycle support of sub assemblies & complete systems as well as relifing experience of submarines and aircrafts. A consultant across diverse engineering disciplines and active member of AIAA, SAMPE, ASME, IIAV, and IEEE, Dr. Munir spearheads technological innovation and systems engineering at Outmax, ensuring infrastructure operates at the highest global standards.",
     emails: ["azhar@outmaxservices.com"],
   },
   {
@@ -106,9 +106,8 @@ export const TeamShowcase = ({ members = teamMembers }) => {
             {col1.map((member) => (
               <div
                 key={member.id}
-                className={`w-[110px] h-[120px] sm:w-[130px] sm:h-[140px] md:w-[155px] md:h-[165px] cursor-pointer flex-shrink-0 transition-opacity duration-300 ${
-                  hoveredId !== null && hoveredId !== member.id ? "opacity-40" : "opacity-100"
-                }`}
+                className={`w-[110px] h-[120px] sm:w-[130px] sm:h-[140px] md:w-[155px] md:h-[165px] cursor-pointer flex-shrink-0 transition-opacity duration-300 ${hoveredId !== null && hoveredId !== member.id ? "opacity-40" : "opacity-100"
+                  }`}
                 onMouseEnter={() => setHoveredId(member.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 onClick={() => setSelectedMember(member)}
@@ -127,9 +126,8 @@ export const TeamShowcase = ({ members = teamMembers }) => {
             {col2.map((member) => (
               <div
                 key={member.id}
-                className={`w-[122px] h-[132px] sm:w-[145px] sm:h-[155px] md:w-[172px] md:h-[182px] cursor-pointer flex-shrink-0 transition-opacity duration-300 ${
-                  hoveredId !== null && hoveredId !== member.id ? "opacity-40" : "opacity-100"
-                }`}
+                className={`w-[122px] h-[132px] sm:w-[145px] sm:h-[155px] md:w-[172px] md:h-[182px] cursor-pointer flex-shrink-0 transition-opacity duration-300 ${hoveredId !== null && hoveredId !== member.id ? "opacity-40" : "opacity-100"
+                  }`}
                 onMouseEnter={() => setHoveredId(member.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 onClick={() => setSelectedMember(member)}
@@ -148,9 +146,8 @@ export const TeamShowcase = ({ members = teamMembers }) => {
             {col3.map((member) => (
               <div
                 key={member.id}
-                className={`w-[115px] h-[125px] sm:w-[136px] sm:h-[146px] md:w-[162px] md:h-[172px] cursor-pointer flex-shrink-0 transition-opacity duration-300 ${
-                  hoveredId !== null && hoveredId !== member.id ? "opacity-40" : "opacity-100"
-                }`}
+                className={`w-[115px] h-[125px] sm:w-[136px] sm:h-[146px] md:w-[162px] md:h-[172px] cursor-pointer flex-shrink-0 transition-opacity duration-300 ${hoveredId !== null && hoveredId !== member.id ? "opacity-40" : "opacity-100"
+                  }`}
                 onMouseEnter={() => setHoveredId(member.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 onClick={() => setSelectedMember(member)}
@@ -172,23 +169,20 @@ export const TeamShowcase = ({ members = teamMembers }) => {
             return (
               <div
                 key={member.id}
-                className={`cursor-pointer transition-opacity duration-300 ${
-                  hoveredId !== null && !isActive ? "opacity-40" : "opacity-100"
-                }`}
+                className={`cursor-pointer transition-opacity duration-300 ${hoveredId !== null && !isActive ? "opacity-40" : "opacity-100"
+                  }`}
                 onMouseEnter={() => setHoveredId(member.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 onClick={() => setSelectedMember(member)}
               >
                 <div className="flex items-center gap-2.5">
                   <span
-                    className={`h-3 rounded-none flex-shrink-0 transition-all duration-300 ${
-                      isActive ? "bg-gold w-6" : "bg-white/20 w-4"
-                    }`}
+                    className={`h-3 rounded-none flex-shrink-0 transition-all duration-300 ${isActive ? "bg-gold w-6" : "bg-white/20 w-4"
+                      }`}
                   />
                   <span
-                    className={`text-2xl md:text-3xl lg:text-4xl leading-none transition-colors duration-300 font-script ${
-                      isActive ? "text-white" : "text-white/60"
-                    }`}
+                    className={`text-2xl md:text-3xl lg:text-4xl leading-none transition-colors duration-300 font-script ${isActive ? "text-white" : "text-white/60"
+                      }`}
                   >
                     {member.name}
                   </span>

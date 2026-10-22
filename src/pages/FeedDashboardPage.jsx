@@ -3,128 +3,34 @@ import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { useAuth } from "../context/AuthContext";
 import SEO from "../components/SEO";
+import { postsService } from "../services/postsService";
 
-// Curated internal strategic briefings
-const INITIAL_POSTS = [
-  {
-    id: "post_1",
-    title: "Q4 Global Operations: Scaling Desks and Baku Strategic Corridor",
-    content:
-      "Over the past 90 days, our enterprise desks maintained consistent 99.4% SLA adherence across all client engagements. With our Baku business development initiative led by Sanaullah Khan expanding into Eurasian commercial networks, Outmax is reinforcing its position as an integrated operations partner for North American mid-market brands. Priority remains disciplined execution and rapid turnaround.",
-    author: {
-      name: "Hamid Iqbal Khan",
-      role: "Chief Executive Officer",
-      department: "Executive Leadership",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
-      verified: true,
-    },
-    category: "Leadership",
-    tags: ["Operations", "Q4Strategy", "GlobalExpansion"],
-    likesCount: 24,
-    likedBy: [],
-    comments: [
-      {
-        id: "c_1",
-        authorName: "Abdul Moiz Khan",
-        authorRole: "Managing Director",
-        authorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80",
-        content: "Agreed. Infrastructure teams have finalized latency optimizations across all regional endpoints.",
-        timestamp: "2 hours ago",
-      },
-      {
-        id: "c_1b",
-        authorName: "Sanaullah Khan",
-        authorRole: "Business Development Lead (Baku)",
-        authorAvatar: "/images/team/sanaullah.png",
-        content: "Baku corporate response is very receptive. Three enterprise evaluations are scheduled for next week.",
-        timestamp: "45 mins ago",
-      },
-    ],
-    mediaUrl: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80",
-    createdAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString(),
-  },
-  {
-    id: "post_2",
-    title: "Hardware-Level Precision in Scalable Web Architecture",
-    content:
-      "Software architecture functions at the boundary between machine efficiency and intuitive human response. In our latest architectural refactor for Outmax internal platforms, we reduced initial hydration latency by 42% through streamlined reactive state and asset pipelining. Building reliable systems means treating every millisecond as a valuable engineering asset.",
-    author: {
-      name: "Hussain Munir",
-      role: "Systems Architect & Full-Stack Engineer",
-      department: "Engineering & Technology",
-      avatar: "/images/team/hussain.png",
-      verified: true,
-    },
-    category: "Engineering",
-    tags: ["SystemsArchitecture", "WebPerf", "GIKIEngineering"],
-    likesCount: 31,
-    likedBy: [],
-    comments: [
-      {
-        id: "c_2",
-        authorName: "Hamid Iqbal Khan",
-        authorRole: "CEO",
-        authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
-        content: "Strong execution. The speed improvements across all operational regions are noticeable.",
-        timestamp: "1 hour ago",
-      },
-    ],
-    mediaUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
-    createdAt: new Date(Date.now() - 7 * 3600 * 1000).toISOString(),
-  },
-  {
-    id: "post_3",
-    title: "Unit Economics and Margin Calibration for Direct Brands",
-    content:
-      "Founders frequently measure gross merchandise volume while overlooking cumulative customer acquisition costs, return logistics, and inventory holding penalties. When structuring pricing models for our venture partners, our baseline rule requires net contribution margins after blended acquisition spend to reach at least 28%. Healthy unit architecture precedes profitable scale.",
-    author: {
-      name: "Abdullah Khan Sarkani",
-      role: "E-Commerce Strategist & Venture Lead",
-      department: "E-Commerce & Brands",
-      avatar: "/images/team/abdullah.png",
-      verified: true,
-    },
-    category: "E-Commerce",
-    tags: ["UnitEconomics", "MRPStrategy", "EcomScaling"],
-    likesCount: 18,
-    likedBy: [],
-    comments: [],
-    mediaUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
-    createdAt: new Date(Date.now() - 14 * 3600 * 1000).toISOString(),
-  },
-  {
-    id: "post_4",
-    title: "Baku Commercial Hub: Strategic Logistics and BPO Partnerships",
-    content:
-      "Reporting from Baku. We have begun formal bilateral discussions with regional logistics operators and corporate enterprise networks in Azerbaijan. Demand for Outmax integrated business process management and client success operations continues to grow across emerging Eurasian tech centers.",
-    author: {
-      name: "Sanaullah Khan",
-      role: "Business Development Lead (Baku)",
-      department: "International Expansion",
-      avatar: "/images/team/sanaullah.png",
-      verified: true,
-    },
-    category: "Expansion",
-    tags: ["BakuHub", "CrossBorder", "BusinessDevelopment"],
-    likesCount: 26,
-    likedBy: [],
-    comments: [],
-    mediaUrl: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
-    createdAt: new Date(Date.now() - 24 * 3600 * 1000).toISOString(),
-  },
+const CATEGORIES = [
+  "All",
+  "Feed Insights",
+  "Full Blog Articles",
+  "Leadership",
+  "Engineering",
+  "E-Commerce",
+  "Operations",
+  "Expansion",
+  "Email Marketing",
+  "Paid Acquisition",
+  "Affiliate Marketing",
+  "Monetization & Arbitrage",
 ];
-
-const CATEGORIES = ["All", "Leadership", "Engineering", "E-Commerce", "Operations", "Expansion"];
 
 const FeedDashboardPage = () => {
   const { user, logout, isAuthenticated, loginAsDemo } = useAuth();
   const navigate = useNavigate();
 
-  const [posts, setPosts] = useState(INITIAL_POSTS);
+  const [posts, setPosts] = useState(() => postsService.getAllFeedPosts());
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isPosting, setIsPosting] = useState(false);
   const [composerOpen, setComposerOpen] = useState(false);
+  const [editingPost, setEditingPost] = useState(null);
+  const [deletingPostId, setDeletingPostId] = useState(null);
 
   // Composer Form State
   const [newTitle, setNewTitle] = useState("");
@@ -138,6 +44,7 @@ const FeedDashboardPage = () => {
   const [filePreview, setFilePreview] = useState("");
   const [isProcessingImage, setIsProcessingImage] = useState(false);
   const fileInputRef = useRef(null);
+  const composerRef = useRef(null);
 
   // Comment states
   const [activeCommentPostId, setActiveCommentPostId] = useState(null);
@@ -151,20 +58,37 @@ const FeedDashboardPage = () => {
   };
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const syncPosts = () => {
+      setPosts(postsService.getAllFeedPosts());
+    };
+
+    syncPosts();
+    window.addEventListener("outmax_posts_changed", syncPosts);
+    window.addEventListener("storage", syncPosts);
+
+    // Background sync from remote API
+    const fetchRemote = async () => {
       try {
         const res = await fetch("/api/posts");
         if (res.ok) {
-          const data = await res.json();
-          if (data.posts && data.posts.length > 0) {
-            setPosts(data.posts);
+          const contentType = res.headers.get("content-type");
+          if (contentType && contentType.includes("application/json")) {
+            const data = await res.json();
+            if (data.posts && data.posts.length > 0) {
+              syncPosts();
+            }
           }
         }
       } catch (e) {
-        console.warn("Using offline feed data", e);
+        // offline fallback
       }
     };
-    fetchPosts();
+    fetchRemote();
+
+    return () => {
+      window.removeEventListener("outmax_posts_changed", syncPosts);
+      window.removeEventListener("storage", syncPosts);
+    };
   }, []);
 
   const formatTimeAgo = (dateStr) => {
@@ -252,110 +176,99 @@ const FeedDashboardPage = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  // Pre-fill composer to edit an existing post or old blog
+  const handleStartEdit = (post) => {
+    setEditingPost(post);
+    setNewTitle(post.title || "");
+    setNewContent(post.content || "");
+    setNewCategory(post.category || "Leadership");
+    setNewTags(Array.isArray(post.tags) ? post.tags.join(", ") : "");
+    setNewMediaUrl(post.mediaUrl || "");
+    setFilePreview(post.mediaUrl || "");
+    setSelectedFile(null);
+    setComposerOpen(true);
+
+    setTimeout(() => {
+      composerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingPost(null);
+    setNewTitle("");
+    setNewContent("");
+    setNewTags("");
+    setNewMediaUrl("");
+    setSelectedFile(null);
+    setFilePreview("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    setComposerOpen(false);
+  };
+
   const handlePublishPost = async (e) => {
     e.preventDefault();
     if (!newContent.trim()) return;
 
     setIsPosting(true);
 
-    const postPayload = {
-      title: newTitle.trim().replace(/—/g, "-"),
-      content: newContent.trim().replace(/—/g, "-"),
-      category: newCategory,
-      tags: newTags
-        .split(",")
-        .map((t) => t.trim().replace(/^#/, "").replace(/—/g, "-"))
-        .filter(Boolean),
-      mediaUrl: newMediaUrl.trim(),
-      author: {
-        name: user?.name || "Team Member",
-        role: user?.role || "Team Specialist",
-        department: user?.department || "Operations",
-        avatar: user?.avatar || "/images/team/hussain.png",
-        verified: true,
-      },
-    };
-
     try {
-      const res = await fetch("/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postPayload),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setPosts([data.post, ...posts]);
+      if (editingPost) {
+        // UPDATE EXISTING POST / OLD BLOG
+        await postsService.updatePost(editingPost.id, {
+          title: newTitle,
+          content: newContent,
+          category: newCategory,
+          tags: newTags,
+          mediaUrl: newMediaUrl,
+        });
+        showToast("Insight updated across feed and blog");
       } else {
-        const localPost = {
-          ...postPayload,
-          id: `post_${Date.now()}`,
-          likesCount: 0,
-          likedBy: [],
-          comments: [],
-          createdAt: new Date().toISOString(),
-        };
-        setPosts([localPost, ...posts]);
+        // CREATE NEW POST
+        await postsService.createPost({
+          title: newTitle,
+          content: newContent,
+          category: newCategory,
+          tags: newTags,
+          mediaUrl: newMediaUrl,
+          author: {
+            name: user?.name || "Team Member",
+            role: user?.role || "Team Specialist",
+            department: user?.department || "Operations",
+            avatar: user?.avatar || "/images/team/hussain.png",
+            verified: true,
+          },
+        });
+        showToast("Insight published to feed & live blog");
       }
 
-      setNewTitle("");
-      setNewContent("");
-      setNewTags("");
-      setNewMediaUrl("");
-      setSelectedFile(null);
-      setFilePreview("");
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      setComposerOpen(false);
-      showToast("Insight published");
+      handleCancelEdit();
     } catch (err) {
       console.error(err);
-      const localPost = {
-        ...postPayload,
-        id: `post_${Date.now()}`,
-        likesCount: 0,
-        likedBy: [],
-        comments: [],
-        createdAt: new Date().toISOString(),
-      };
-      setPosts([localPost, ...posts]);
-      setComposerOpen(false);
-      showToast("Insight saved");
+      showToast("Failed to save insight");
     } finally {
       setIsPosting(false);
     }
   };
 
-  const handleLike = async (postId) => {
-    const userEmail = user?.email || "anonymous_member";
-
-    setPosts((prev) =>
-      prev.map((p) => {
-        if (p.id === postId) {
-          const likedBy = p.likedBy || [];
-          const alreadyLiked = likedBy.includes(userEmail);
-          return {
-            ...p,
-            likedBy: alreadyLiked
-              ? likedBy.filter((e) => e !== userEmail)
-              : [...likedBy, userEmail],
-            likesCount: alreadyLiked
-              ? Math.max(0, (p.likesCount || 1) - 1)
-              : (p.likesCount || 0) + 1,
-          };
-        }
-        return p;
-      })
+  const handleDeletePost = async (postId, postTitle) => {
+    const titleLabel = postTitle ? `"${postTitle}"` : "this insight";
+    const confirmed = window.confirm(
+      `Are you sure you want to delete ${titleLabel}? It will be removed from both the feed and public website.`
     );
+    if (!confirmed) return;
 
     try {
-      await fetch("/api/posts/like", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ postId, userEmail }),
-      });
-    } catch (e) {
-      console.warn("Endorsement synced locally", e);
+      await postsService.deletePost(postId);
+      showToast("Entry removed successfully");
+    } catch (err) {
+      console.error(err);
+      showToast("Failed to delete entry");
     }
+  };
+
+  const handleLike = async (postId) => {
+    const userEmail = user?.email || "anonymous_member";
+    await postsService.toggleLike(postId, userEmail);
   };
 
   const handleAddComment = async (postId) => {
@@ -405,9 +318,14 @@ const FeedDashboardPage = () => {
   };
 
   const filteredPosts = posts.filter((post) => {
-    const matchesCategory =
-      activeCategory === "All" ||
-      post.category?.toLowerCase() === activeCategory.toLowerCase();
+    let matchesCategory = true;
+    if (activeCategory === "Feed Insights") {
+      matchesCategory = !post.isStaticArticle;
+    } else if (activeCategory === "Full Blog Articles") {
+      matchesCategory = !!post.isStaticArticle;
+    } else if (activeCategory !== "All") {
+      matchesCategory = post.category?.toLowerCase() === activeCategory.toLowerCase();
+    }
 
     const matchesSearch =
       !searchQuery ||
@@ -613,19 +531,49 @@ const FeedDashboardPage = () => {
 
           {/* Minimal Apple-Style Post Composer (When Open) */}
           {composerOpen && (
-            <div className="bg-[#0f0f14] border border-white/[0.08] rounded-xl p-5 shadow-2xl transition-all">
+            <div
+              ref={composerRef}
+              className="bg-[#0f0f14] border border-white/[0.08] rounded-xl p-5 shadow-2xl transition-all"
+            >
               <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-4">
-                <span className="text-xs uppercase tracking-wider text-neutral-400 font-medium">
-                  Draft Internal Memo
+                <span className="text-xs uppercase tracking-wider text-neutral-400 font-medium flex items-center gap-2">
+                  {editingPost ? (
+                    <>
+                      <Icon icon="ph:pencil-simple" className="text-[#cfa355] text-sm" />
+                      <span className="text-[#cfa355]">Editing Insight</span>
+                    </>
+                  ) : (
+                    <span>Draft Internal Memo</span>
+                  )}
                 </span>
                 <button
                   type="button"
-                  onClick={() => setComposerOpen(false)}
+                  onClick={handleCancelEdit}
                   className="text-neutral-500 hover:text-neutral-300 text-xs cursor-pointer"
                 >
                   Close
                 </button>
               </div>
+
+              {editingPost && (
+                <div className="mb-4 bg-[#cfa355]/10 border border-[#cfa355]/20 rounded-md p-3 text-xs text-neutral-300 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-medium text-[#cfa355] truncate">
+                      Editing: {editingPost.title || "Untitled Entry"}
+                    </p>
+                    <p className="text-[11px] text-neutral-400 mt-0.5">
+                      Updates will sync to internal feed and live public article at /blog/{editingPost.slug || editingPost.id}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleCancelEdit}
+                    className="text-[11px] text-neutral-400 hover:text-white underline shrink-0 cursor-pointer"
+                  >
+                    Cancel Edit
+                  </button>
+                </div>
+              )}
 
               <form onSubmit={handlePublishPost} className="space-y-4">
                 <div>
@@ -640,12 +588,12 @@ const FeedDashboardPage = () => {
 
                 <div>
                   <textarea
-                    rows={4}
+                    rows={5}
                     required
                     placeholder="Compose memo, engineering breakdown, or operational update..."
                     value={newContent}
                     onChange={(e) => setNewContent(e.target.value)}
-                    className="w-full bg-transparent border border-white/[0.06] focus:border-[#cfa355]/60 rounded-md p-3 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none leading-relaxed resize-none"
+                    className="w-full bg-transparent border border-white/[0.06] focus:border-[#cfa355]/60 rounded-md p-3 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none leading-relaxed resize-none font-sans"
                   />
                 </div>
 
@@ -659,7 +607,7 @@ const FeedDashboardPage = () => {
                       onChange={(e) => setNewCategory(e.target.value)}
                       className="w-full bg-[#15151c] border border-white/[0.08] focus:border-[#cfa355]/60 rounded-md p-2 text-xs text-neutral-200 focus:outline-none cursor-pointer"
                     >
-                      {CATEGORIES.filter((c) => c !== "All").map((c) => (
+                      {CATEGORIES.filter((c) => c !== "All" && c !== "Feed Insights" && c !== "Full Blog Articles").map((c) => (
                         <option key={c} value={c} className="bg-[#111116]">
                           {c}
                         </option>
@@ -758,10 +706,7 @@ const FeedDashboardPage = () => {
                 <div className="flex items-center justify-end gap-2 pt-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      setComposerOpen(false);
-                      handleRemoveImage();
-                    }}
+                    onClick={handleCancelEdit}
                     className="text-xs text-neutral-400 hover:text-white px-3 py-1.5 transition-colors cursor-pointer"
                   >
                     Cancel
@@ -771,7 +716,11 @@ const FeedDashboardPage = () => {
                     disabled={isPosting || !newContent.trim() || isProcessingImage}
                     className="bg-[#cfa355] hover:bg-[#d9b165] text-[#070709] px-4 py-1.5 rounded-md text-xs font-medium transition-all disabled:opacity-40 cursor-pointer"
                   >
-                    {isPosting ? "Publishing..." : "Publish Entry"}
+                    {isPosting
+                      ? "Saving..."
+                      : editingPost
+                      ? "Save Changes"
+                      : "Publish Entry"}
                   </button>
                 </div>
               </form>
@@ -820,10 +769,17 @@ const FeedDashboardPage = () => {
                         </div>
                       </div>
 
-                      {/* Minimal Desk Tag */}
-                      <span className="text-[10px] uppercase tracking-wider text-neutral-400 bg-white/[0.03] border border-white/[0.06] px-2 py-1 rounded-sm font-mono">
-                        {post.category || "General"}
-                      </span>
+                      {/* Desk & Type Tags */}
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {post.isStaticArticle && (
+                          <span className="text-[10px] uppercase tracking-wider text-[#cfa355] bg-[#cfa355]/10 border border-[#cfa355]/20 px-2 py-0.5 rounded-sm font-mono">
+                            Blog Article
+                          </span>
+                        )}
+                        <span className="text-[10px] uppercase tracking-wider text-neutral-400 bg-white/[0.03] border border-white/[0.06] px-2 py-0.5 rounded-sm font-mono">
+                          {post.category || "General"}
+                        </span>
+                      </div>
                     </div>
 
                     {/* Title */}
@@ -865,7 +821,7 @@ const FeedDashboardPage = () => {
                     )}
 
                     {/* Actions Bar */}
-                    <div className="flex items-center justify-between pt-3 border-t border-white/[0.06] text-xs text-neutral-400">
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/[0.06] text-xs text-neutral-400">
                       <div className="flex items-center gap-4">
                         <button
                           type="button"
@@ -893,19 +849,78 @@ const FeedDashboardPage = () => {
                           <Icon icon="ph:chat-circle" className="text-sm" />
                           <span>{(post.comments || []).length}</span>
                         </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const shareUrl = `${window.location.origin}/blog/${post.slug || post.id}`;
+                            navigator.clipboard?.writeText?.(shareUrl);
+                            showToast("Article link copied");
+                          }}
+                          className="hover:text-white transition-colors cursor-pointer flex items-center gap-1"
+                        >
+                          <Icon icon="ph:share-simple" className="text-sm" />
+                          <span>Share</span>
+                        </button>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => {
-                          navigator.clipboard?.writeText?.(window.location.href);
-                          showToast("Link copied");
-                        }}
-                        className="hover:text-white transition-colors cursor-pointer flex items-center gap-1"
-                      >
-                        <Icon icon="ph:share-simple" className="text-sm" />
-                        <span>Share</span>
-                      </button>
+                      {/* Direct Live Website Link, Edit & Delete Buttons */}
+                      <div className="flex items-center gap-2">
+                        <Link
+                          to={`/blog/${post.slug || post.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#cfa355] hover:text-[#e0b86c] transition-colors flex items-center gap-1 text-[11px] px-2 py-1 bg-white/[0.03] hover:bg-white/[0.06] rounded-sm border border-white/[0.06]"
+                          title="View on public Insights & Blog page"
+                        >
+                          <Icon icon="ph:arrow-square-out" className="text-xs text-[#cfa355]" />
+                          <span>Live Article</span>
+                        </Link>
+
+                        <button
+                          type="button"
+                          onClick={() => handleStartEdit(post)}
+                          className="text-neutral-300 hover:text-white transition-colors cursor-pointer flex items-center gap-1 text-[11px] bg-white/[0.03] hover:bg-white/[0.08] px-2 py-1 rounded-sm border border-white/[0.06]"
+                          title="Edit this blog or insight"
+                        >
+                          <Icon icon="ph:pencil-simple" className="text-xs text-[#cfa355]" />
+                          <span>Edit</span>
+                        </button>
+
+                        {deletingPostId === post.id ? (
+                          <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 px-2 py-1 rounded-sm">
+                            <span className="text-[10px] text-red-300">Delete?</span>
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                await postsService.deletePost(post.id);
+                                setDeletingPostId(null);
+                                showToast("Entry removed");
+                              }}
+                              className="text-white bg-red-600/90 hover:bg-red-600 px-1.5 py-0.5 rounded-sm text-[10px] font-medium transition-colors cursor-pointer"
+                            >
+                              Yes
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setDeletingPostId(null)}
+                              className="text-neutral-400 hover:text-white px-1 text-[10px] cursor-pointer"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setDeletingPostId(post.id)}
+                            className="text-neutral-400 hover:text-red-400 transition-colors cursor-pointer flex items-center gap-1 text-[11px] bg-white/[0.03] hover:bg-red-500/10 px-2 py-1 rounded-sm border border-white/[0.06] hover:border-red-500/20"
+                            title="Permanently remove this blog from feed and website"
+                          >
+                            <Icon icon="ph:trash" className="text-xs" />
+                            <span>Delete</span>
+                          </button>
+                        )}
+                      </div>
                     </div>
 
                     {/* Inline Comment Section */}
