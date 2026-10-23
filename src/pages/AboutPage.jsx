@@ -59,7 +59,7 @@ export const AboutPage = () => {
                 Location
               </span>
               <p className="font-light text-white/90 text-sm">
-                Mall View Building, 1-A Mall Road, Wah Cantt
+                Office No 2, First Floor, Mall View Building, 1-A Mall Road, Wah Cantt, Punjab, Pakistan
               </p>
             </div>
           </div>

@@ -81,13 +81,13 @@ multiple departments, from customer engagement to digital infrastructure`;
                 <span className="text-gold uppercase tracking-[0.2em] font-semibold text-[10px] sm:text-[11px]">
                   Corporate Leadership
                 </span>
-                <span className="text-white/50 text-[11px] font-mono">Wah Cantt, Punjab</span>
+                <span className="text-white/50 text-[11px] font-mono">Wah Cantt, Pakistan</span>
               </div>
               <p className="text-white/95 text-sm sm:text-base font-medium leading-snug">
                 Hamid Iqbal Khan (CEO) &amp; Executive Partners
               </p>
               <p className="text-white/60 text-xs mt-1 font-light leading-relaxed">
-                Office No 2, First Floor, Mall View Building, 1-A Mall Road, Wah Cantt
+                Office No 2, First Floor, Mall View Building, 1-A Mall Road, Wah Cantt, Punjab, Pakistan
               </p>
             </div>
           </div>
