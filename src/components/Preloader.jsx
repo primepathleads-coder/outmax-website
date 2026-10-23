@@ -1,27 +1,20 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 
 /**
  * Premium Outmax Services Preloader
  * Features:
- * - 3D Bronze Logo reveal animation video (WebM/MP4 with WebP poster)
- * - Stylish cursive font headline ("Luthon Southard Script")
+ * - High-definition 3D Bronze Emblem with alpha blend (zero black background box)
+ * - Stylish cursive font headline ("Luthon Southard Script") color-matched to bronze logo
  * - Minimalist glowing loading bar with fluid progress interpolation
  * - Smooth entrance and exit transitions
  */
 const Preloader = ({ progress = 0, onComplete }) => {
   const [displayProgress, setDisplayProgress] = useState(15);
   const [isFadingOut, setIsFadingOut] = useState(false);
-  const videoRef = useRef(null);
 
-  // Smooth progress incrementation with minimum duration so the bronze video can form gracefully
+  // Smooth progress incrementation
   useEffect(() => {
-    // Attempt video playback
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Autoplay fallback if browser blocks
-      });
-    }
 
     const interval = setInterval(() => {
       setDisplayProgress((prev) => {
@@ -71,14 +64,14 @@ const Preloader = ({ progress = 0, onComplete }) => {
     >
       {/* Ambient background glow behind the bronze logo */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-radial from-[#cfa355]/15 via-transparent to-transparent rounded-full blur-3xl opacity-70" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-radial from-[#c5a07e]/15 via-[#c5a07e]/5 to-transparent rounded-full blur-3xl opacity-80" />
       </div>
 
       {/* Skip Button (top-right corner) */}
       <button
         type="button"
         onClick={handleSkip}
-        className="absolute top-6 right-6 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-[11px] font-mono tracking-widest text-white/50 hover:text-white uppercase border border-white/10 transition-all cursor-pointer backdrop-blur-md"
+        className="absolute top-6 right-6 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-[11px] font-mono tracking-widest text-white/50 hover:text-[#dfbe9f] uppercase border border-white/10 hover:border-[#c5a07e]/40 transition-all cursor-pointer backdrop-blur-md"
       >
         <span>Skip</span>
         <Icon icon="lucide:arrow-right" className="size-3" />
@@ -86,47 +79,41 @@ const Preloader = ({ progress = 0, onComplete }) => {
 
       {/* Content Container */}
       <div className="relative z-10 flex flex-col items-center justify-center max-w-xl px-6 w-full text-center">
-        {/* Bronze Logo Video Reveal */}
-        <div className="relative w-full max-w-[340px] sm:max-w-[420px] md:max-w-[460px] aspect-video overflow-hidden rounded-2xl flex items-center justify-center mb-2">
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            playsInline
-            preload="auto"
-            poster="/videos/outmax-logo-poster.webp"
-            className="w-full h-full object-contain filter contrast-105"
-          >
-            <source src="/videos/outmax-logo-reveal.webm" type="video/webm" />
-            <source src="/videos/outmax-logo-reveal.mp4" type="video/mp4" />
-          </video>
+        {/* Bronze Logo Emblem — 100% Transparent, Seamless Blend, Zero Black Box */}
+        <div className="relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[280px] flex items-center justify-center mb-4">
+          <div className="absolute inset-0 bg-radial from-[#c5a07e]/25 to-transparent blur-2xl rounded-full scale-125 pointer-events-none" />
+          <img
+            src="/images/outmax-emblem-bronze.png"
+            alt="Outmax Services"
+            className="relative z-10 w-full h-auto object-contain drop-shadow-[0_4px_24px_rgba(197,160,126,0.3)] filter contrast-[1.03] brightness-[1.02] select-none"
+          />
         </div>
 
-        {/* Stylish Cursive Script Tagline */}
-        <div className="mb-6 -mt-2 space-y-1">
-          <h2 className="font-script text-3xl sm:text-4xl md:text-5xl text-gold font-normal tracking-wide drop-shadow-[0_2px_15px_rgba(207,163,85,0.45)] select-none">
+        {/* Stylish Cursive Script Tagline — Perfectly Color-Matched */}
+        <div className="mb-6 space-y-1.5">
+          <h2 className="font-script text-3xl sm:text-4xl md:text-5xl text-[#c5a07e] font-normal tracking-wide drop-shadow-[0_2px_18px_rgba(197,160,126,0.45)] select-none">
             Outmax Services
           </h2>
-          <p className="font-serif italic text-xs sm:text-sm text-white/60 tracking-wider">
-            Elevating Global Horizons & Enterprise Scale
+          <p className="font-serif italic text-xs sm:text-sm text-[#dfbe9f]/80 tracking-wider">
+            Elevating Global Horizons &amp; Enterprise Scale
           </p>
         </div>
 
-        {/* Minimalist Glowing Progress Bar */}
+        {/* Minimalist Glowing Progress Bar — Color Matched */}
         <div className="w-56 sm:w-72 space-y-2.5">
-          <div className="relative h-[2px] w-full bg-white/15 rounded-full overflow-hidden backdrop-blur-sm">
+          <div className="relative h-[2px] w-full bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
             <div
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#8a682b] via-[#cfa355] to-[#f6df9a] rounded-full transition-all duration-150 ease-out shadow-[0_0_12px_rgba(207,163,85,0.9)]"
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#8f6f58] via-[#c5a07e] to-[#dfbe9f] rounded-full transition-all duration-150 ease-out shadow-[0_0_12px_rgba(197,160,126,0.85)]"
               style={{ width: `${displayProgress}%` }}
             />
           </div>
 
           {/* Minimal Percentage Counter */}
-          <div className="flex items-center justify-between text-[10px] font-mono tracking-[0.25em] text-white/45 uppercase px-0.5">
-            <span className="font-script text-xs sm:text-sm text-gold/75 tracking-wider lowercase">
+          <div className="flex items-center justify-between text-[10px] font-mono tracking-[0.25em] text-[#dfbe9f]/60 uppercase px-0.5">
+            <span className="font-script text-xs sm:text-sm text-[#c5a07e]/85 tracking-wider lowercase">
               crafting experience...
             </span>
-            <span className="text-white/70 font-semibold">
+            <span className="text-[#dfbe9f]/90 font-semibold">
               {Math.floor(displayProgress)}%
             </span>
           </div>
