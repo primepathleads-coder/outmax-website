@@ -20,7 +20,7 @@ const ContactSummary = () => {
     "Outmax Services Ltd",
     "Strategic BPO Partner",
     "Performance Marketing",
-    "Apt 401 Civic Center Rawalpindi",
+    "Mall View Building Wah Cantt",
     "Everflow Tracking",
     "Meta Ads Desk",
   ];

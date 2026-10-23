@@ -104,7 +104,7 @@ export default async function handler(req, res) {
           </p>
           <div class="footer">
             Outmax Services Ltd | Corporate Operations Desk<br>
-            Bahria Town Phase 4, Civic Center, Rawalpindi
+            Office No 2, First Floor, Mall View Building, 1-A Mall Road, Wah Cantt, Punjab
           </div>
         </div>
       </body>

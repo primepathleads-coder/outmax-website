@@ -11,7 +11,7 @@ export const AboutPage = () => {
     <div className="pt-28 pb-24 text-black">
       <SEO
         title="About Outmax Services | Leadership, Mission & Global Operations"
-        description="Meet Outmax Services, led by CEO Hamid Iqbal Khan and MD Abdul Moiz Khan. Providing enterprise BPO, lead acquisition desks, and performance marketing from Rawalpindi, Pakistan."
+        description="Meet Outmax Services, led by CEO Hamid Iqbal Khan and MD Abdul Moiz Khan. Providing enterprise BPO, lead acquisition desks, and performance marketing from Wah Cantt, Punjab, Pakistan."
       />
 
       {/* Hero Section */}
@@ -59,7 +59,7 @@ export const AboutPage = () => {
                 Location
               </span>
               <p className="font-light text-white/90 text-sm">
-                Civic Center, Bahria Town Phase 4, Rawalpindi
+                Mall View Building, 1-A Mall Road, Wah Cantt
               </p>
             </div>
           </div>

@@ -80,7 +80,7 @@ export const faqsData = [
       },
       {
         q: "Where is Outmax Services Ltd based?",
-        a: "Our corporate headquarters is located at Apt No. 401, Building No. 153-H, Bahria Town Phase 4, Civic Center, Rawalpindi, Pakistan.",
+        a: "Our corporate headquarters is located at Office No 2, First Floor, Mall View Building, 1-A Mall Road, Wah Cantt, Punjab, Pakistan.",
       },
     ],
   },

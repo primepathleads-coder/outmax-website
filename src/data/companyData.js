@@ -10,10 +10,11 @@ export const companyInfo = {
   elevatorPitch:
     "Outmax Services Ltd is an outsourcing and digital growth partner that helps businesses streamline operations and accelerate revenue. We provide comprehensive BPO solutions, including inbound and outbound customer support, sales, marketing, branding, HR, and bookkeeping, alongside affiliate marketing, media buying, and web/app development services. By acting as an extension of our clients' teams, we enable them to reduce costs, grow revenue, and focus on scaling their business.",
   location: {
-    address: "Apt No. 401, Building No. 153-H, Bahria Town Phase 4, Civic Center",
-    city: "Rawalpindi",
+    address: "Office No 2, First Floor, Mall View Building, 1-A Mall Road",
+    city: "Wah Cantt",
+    state: "Punjab",
     country: "Pakistan",
-    formatted: "Apt No. 401, Building No. 153-H, Bahria Town Phase 4, Civic Center, Rawalpindi, Pakistan",
+    formatted: "Office No 2, First Floor, Mall View Building, 1-A Mall Road, Wah Cantt, Punjab, Pakistan",
   },
   contact: {
     inquiryEmail: "contact@outmaxservices.com",

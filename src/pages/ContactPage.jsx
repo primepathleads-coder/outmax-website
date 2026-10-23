@@ -108,7 +108,7 @@ export const ContactPage = () => {
           `Deployment Timeline: ${submittedData.timeline}\n` +
           `Message:\n${submittedData.message}\n` +
           `====================================\n` +
-          `Headquarters: Apt No. 401, Building No. 153-H, Bahria Town Phase 4, Civic Center, Rawalpindi, Pakistan\n` +
+          `Headquarters: Office No 2, First Floor, Mall View Building, 1-A Mall Road, Wah Cantt, Punjab, Pakistan\n` +
           `Founder & Managing Director: Abdul Moiz Khan\n`,
       ],
       { type: "text/plain;charset=utf-8" }
@@ -466,7 +466,7 @@ export const ContactPage = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-4 left-4 right-4 text-white text-xs font-light">
                 <span className="text-gold font-mono uppercase tracking-wider block text-[10px]">
-                  Rawalpindi Civic Center Hub
+                  Wah Cantt Headquarters
                 </span>
                 <span>Connecting international enterprises with high-performance BPO talent.</span>
               </div>
