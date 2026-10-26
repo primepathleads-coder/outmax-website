@@ -147,23 +147,6 @@ const Navbar = () => {
         <OutmaxLogo variant="dark" showTagline={true} size="lg" />
       </div>
 
-      {/* Top Right Floating Team Portal Button */}
-      <div
-        className="fixed top-5 right-24 sm:right-32 z-40 transition-all duration-500 hidden sm:block"
-        style={{
-          opacity: logoVisible ? 1 : 0,
-          transform: logoVisible ? "translateY(0)" : "translateY(-12px)",
-          pointerEvents: logoVisible ? "auto" : "none",
-        }}
-      >
-        <Link
-          to="/feed"
-          className="flex items-center gap-2 bg-black/80 hover:bg-[#cfa355] text-white hover:text-black border border-white/20 hover:border-[#cfa355] px-3.5 py-2 rounded-md text-[11px] uppercase tracking-[0.18em] font-medium backdrop-blur-md transition-all shadow-lg group"
-        >
-          <span className="w-1.5 h-1.5 rounded-sm bg-emerald-400 group-hover:bg-black" />
-          <span>Team Portal</span>
-        </Link>
-      </div>
 
       {/* Signature Awwwards Full-Height Slide-In Drawer Navigation */}
       <nav
@@ -172,9 +155,19 @@ const Navbar = () => {
       >
         <div className="flex items-center justify-between pb-6 border-b border-white/10">
           <OutmaxLogo variant="light" size="md" />
-          <span className="text-[11px] tracking-[0.25em] text-gold uppercase">
-            Navigation
-          </span>
+          <div className="flex items-center gap-3">
+            <Link
+              to="/feed"
+              onClick={toggleMenu}
+              className="flex items-center gap-2 bg-[#cfa355]/15 hover:bg-[#cfa355] text-[#cfa355] hover:text-black border border-[#cfa355]/40 px-3 py-1.5 rounded-full text-[10px] tracking-widest uppercase font-medium transition-all group"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 group-hover:bg-black" />
+              <span>Team Portal</span>
+            </Link>
+            <span className="text-[11px] tracking-[0.25em] text-gold uppercase hidden sm:inline">
+              Navigation
+            </span>
+          </div>
         </div>
 
         <div className="flex flex-col text-2xl sm:text-3xl md:text-4xl lg:text-5xl gap-y-2 font-light">
@@ -189,8 +182,9 @@ const Navbar = () => {
               >
                 <span>{item.name}</span>
                 {item.isSpecial && (
-                  <span className="text-[10px] tracking-widest uppercase bg-[#cfa355]/20 text-[#cfa355] px-2 py-0.5 rounded-md border border-[#cfa355]/40 align-middle">
-                    Members
+                  <span className="inline-flex items-center gap-1.5 text-[10px] tracking-widest uppercase bg-[#cfa355]/20 text-[#cfa355] px-2.5 py-0.5 rounded-md border border-[#cfa355]/40 align-middle">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    <span>Portal</span>
                   </span>
                 )}
               </Link>

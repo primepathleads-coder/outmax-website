@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ReactLenis from "lenis/react";
-import { useProgress } from "@react-three/drei";
 
 import Navbar from "./sections/Navbar";
 import Footer from "./components/Footer";
@@ -24,31 +23,49 @@ import TermsPage from "./pages/TermsPage";
 import CookiePolicyPage from "./pages/CookiePolicyPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
-import Preloader from "./components/Preloader";
+import Hairline from "./components/Hairline";
 import { AuthProvider } from "./context/AuthContext";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import FeedDashboardPage from "./pages/FeedDashboardPage";
 
 const App = () => {
-  const { progress } = useProgress();
   const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    if (!isReady) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isReady]);
 
   return (
     <AuthProvider>
       <Router>
         <ScrollToTop />
         <ReactLenis root className="relative w-screen min-h-screen overflow-x-hidden bg-[#e5e5e0] font-sans">
-          {/* Premium 3D Bronze Logo Video Reveal Preloader */}
+          {/* Hairline Loader — Originkit */}
           {!isReady && (
-            <Preloader progress={progress} onComplete={() => setIsReady(true)} />
+            <Hairline
+              minTime={3.5}
+              onComplete={() => setIsReady(true)}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 9999,
+                width: "100%",
+                height: "100%",
+                minWidth: "100%",
+                minHeight: "100%",
+              }}
+            />
           )}
 
-          <div
-            className={`${
-              isReady ? "opacity-100" : "opacity-0"
-            } transition-opacity duration-1000 flex flex-col min-h-screen`}
-          >
+          <div className="flex flex-col min-h-screen">
             <Navbar />
 
             <main className="flex-1">
